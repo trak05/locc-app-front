@@ -1,0 +1,12 @@
+<nav class="topnav">
+  <span class="topnav__brand">🏠 Loc App</span>
+  <a routerLink="/dashboard" routerLinkActive="active">Accueil</a>
+  <a routerLink="/biens" routerLinkActive="active">Biens</a>
+  <a routerLink="/locataires" routerLinkActive="active">Locataires</a>
+  <a routerLink="/baux" routerLinkActive="active">Baux</a>
+  <button type="button" class="topnav__logout" (click)="logout()">Déconnexion</button>
+</nav>
+
+<main class="content">
+  <router-outlet />
+</main>

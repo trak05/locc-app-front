@@ -1,0 +1,24 @@
+/* Styles globaux — volontairement minimal pour ce v0 (scaffolding), pas de
+   palette/design travaillé : ce sera une tâche dédiée plus tard. */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  color: #12181b;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #dde3dd;
+}

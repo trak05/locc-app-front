@@ -1,0 +1,30 @@
+<h1>Locataires : {{ locataires().length }}</h1>
+
+@if (isLoading()) {
+  <p>Chargement...</p>
+} @else {
+  <table>
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Email</th>
+        <th>Téléphone</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (locataire of locataires(); track locataire.id) {
+        <tr>
+          <td>{{ locataire.personalInfo.nom }}</td>
+          <td>{{ locataire.personalInfo.prenom }}</td>
+          <td>{{ locataire.personalInfo.email }}</td>
+          <td>{{ locataire.personalInfo.telephone ?? '—' }}</td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="4">Aucun locataire pour l'instant.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}

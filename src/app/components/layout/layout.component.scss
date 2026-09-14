@@ -1,0 +1,39 @@
+.topnav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0.75rem 1.25rem;
+  background: white;
+  border-bottom: 1px solid #dde3dd;
+
+  &__brand {
+    font-weight: 700;
+    margin-right: 0.5rem;
+  }
+
+  a {
+    text-decoration: none;
+    color: #12181b;
+    opacity: 0.75;
+    font-weight: 500;
+
+    &.active {
+      opacity: 1;
+      color: #0f5c56;
+    }
+  }
+
+  &__logout {
+    margin-left: auto;
+    border: none;
+    background: transparent;
+    color: #d64545;
+    font-weight: 600;
+    cursor: pointer;
+  }
+}
+
+.content {
+  padding: 1.5rem;
+}
