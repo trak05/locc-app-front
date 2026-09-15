@@ -1,0 +1,38 @@
+<h1>Bienvenue 👋</h1>
+<p class="subtitle">Vue d'ensemble de votre patrimoine locatif.</p>
+
+<div class="stats">
+  <div class="stat-card">
+    <span class="stat-card__label">Biens</span>
+    <span class="stat-card__value">{{ isLoadingBiens() ? '…' : biens().length }}</span>
+  </div>
+
+  <div class="stat-card">
+    <span class="stat-card__label">Locataires</span>
+    <span class="stat-card__value">{{ isLoadingLocataires() ? '…' : locataires().length }}</span>
+  </div>
+
+  <div class="stat-card">
+    <span class="stat-card__label">Baux actifs</span>
+    <span class="stat-card__value">{{ isLoadingBaux() ? '…' : bauxActifs() }}</span>
+  </div>
+</div>
+
+<h2>Accès rapide</h2>
+
+<div class="quick-links">
+  <a routerLink="/biens" class="quick-link">
+    <span class="quick-link__title">Biens</span>
+    <span class="quick-link__desc">Consulter vos appartements, maisons et studios.</span>
+  </a>
+
+  <a routerLink="/locataires" class="quick-link">
+    <span class="quick-link__title">Locataires</span>
+    <span class="quick-link__desc">Consulter la liste de vos locataires.</span>
+  </a>
+
+  <a routerLink="/baux" class="quick-link">
+    <span class="quick-link__title">Baux</span>
+    <span class="quick-link__desc">Consulter les contrats de location en cours.</span>
+  </a>
+</div>

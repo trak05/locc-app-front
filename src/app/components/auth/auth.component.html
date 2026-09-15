@@ -1,25 +1,71 @@
-<div class="login-container">
-  <div class="login-card">
-    <h1>Connexion</h1>
+<div class="login-page">
+  <div class="login-panel">
+    <div class="login-panel__inner">
+      <svg class="brand" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="LocApp">
+        <rect width="64" height="64" rx="16" fill="#0f5c56" />
+        <text x="32" y="29" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" letter-spacing="1" fill="#f4efe4">LOC</text>
+        <text x="32" y="45" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" letter-spacing="1" fill="#f4efe4">APP</text>
+      </svg>
 
-    <form [formGroup]="form" (ngSubmit)="login()">
-      <label>
-        Identifiant
-        <input type="text" formControlName="username" autocomplete="username" />
-      </label>
+      <h1>Connexion</h1>
+      <p class="subtitle">Accédez à votre espace propriétaire ou locataire.</p>
 
-      <label>
-        Mot de passe
-        <input type="password" formControlName="password" autocomplete="current-password" />
-      </label>
+      <form [formGroup]="form" (ngSubmit)="login()">
+        <label>
+          Identifiant
+          <input type="text" formControlName="username" autocomplete="username" />
+        </label>
 
-      @if (errorMessage()) {
-        <p class="error">{{ errorMessage() }}</p>
-      }
+        <label>
+          Mot de passe
+          <div class="password-field">
+            <input
+              [type]="showPassword() ? 'text' : 'password'"
+              formControlName="password"
+              autocomplete="current-password"
+            />
+            <button
+              type="button"
+              class="toggle-visibility"
+              (click)="togglePassword()"
+              [attr.aria-label]="showPassword() ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
+            >
+              @if (showPassword()) {
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a18.5 18.5 0 0 1 4.22-5.06M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 11 7 11 7a18.5 18.5 0 0 1-2.16 3.19M14.12 14.12a3 3 0 1 1-4.24-4.24" />
+                  <line x1="1" y1="1" x2="23" y2="23" />
+                </svg>
+              } @else {
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              }
+            </button>
+          </div>
+        </label>
 
-      <button type="submit" [disabled]="form.invalid || loading()">
-        {{ loading() ? 'Connexion...' : 'Se connecter' }}
-      </button>
-    </form>
+        @if (errorMessage()) {
+          <p class="error">{{ errorMessage() }}</p>
+        }
+
+        <button type="submit" class="submit" [disabled]="form.invalid || loading()">
+          {{ loading() ? 'Connexion...' : "S'identifier" }}
+        </button>
+      </form>
+
+      <div class="links">
+        <a href="#">Mot de passe oublié</a>
+        <a href="#">Mentions légales</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="login-hero">
+    <div class="login-hero__blobs" aria-hidden="true"></div>
+    <div class="login-hero__content">
+      <h2>Bienvenue dans <span>votre espace</span></h2>
+      <p>Consultez vos biens, vos baux et vos documents en toute simplicité.</p>
+    </div>
   </div>
 </div>

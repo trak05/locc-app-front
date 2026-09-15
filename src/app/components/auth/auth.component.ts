@@ -17,6 +17,11 @@ export class AuthComponent {
 
   errorMessage = signal<string | null>(null);
   loading = signal(false);
+  showPassword = signal(false);
+
+  togglePassword(): void {
+    this.showPassword.update((value) => !value);
+  }
 
   form = this.fb.nonNullable.group({
     username: ['', Validators.required],
