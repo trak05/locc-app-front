@@ -13,6 +13,7 @@ description: Stage and commit all pending changes in loc-app-front with an auto-
 6. Report the resulting commit hash and full message back to the user. Do not push, do not use `--no-verify`.
 
 ## Constraints
+
 - Never `git push`.
 - Never bypass hooks (`--no-verify`) or amend prior commits.
 - Only operate on the `loc-app-front` repo.

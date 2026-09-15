@@ -20,6 +20,14 @@ export const routes: Routes = [
         loadComponent: () => import('./components/biens/biens-list.component').then((m) => m.BiensListComponent),
       },
       {
+        path: 'biens/new',
+        loadComponent: () => import('./components/biens/bien-form.component').then((m) => m.BienFormComponent),
+      },
+      {
+        path: 'biens/:id/edit',
+        loadComponent: () => import('./components/biens/bien-form.component').then((m) => m.BienFormComponent),
+      },
+      {
         path: 'locataires',
         loadComponent: () =>
           import('./components/locataires/locataires-list.component').then((m) => m.LocatairesListComponent),

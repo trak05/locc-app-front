@@ -1,4 +1,7 @@
-<h1>Biens : {{ biens().length }}</h1>
+<div class="list-header">
+  <h1>Biens : {{ biens().length }}</h1>
+  <a routerLink="/biens/new" class="add-link">+ Ajouter un bien</a>
+</div>
 
 @if (isLoading()) {
   <p>Chargement...</p>
@@ -11,6 +14,7 @@
         <th>Ville</th>
         <th>Type</th>
         <th>Pièces</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -21,10 +25,11 @@
           <td>{{ bien.ville }}</td>
           <td>{{ bien.type }}</td>
           <td>{{ bien.nombrePieces ?? '—' }}</td>
+          <td><a [routerLink]="['/biens', bien.id, 'edit']">Modifier</a></td>
         </tr>
       } @empty {
         <tr>
-          <td colspan="5">Aucun bien pour l'instant.</td>
+          <td colspan="6">Aucun bien pour l'instant.</td>
         </tr>
       }
     </tbody>

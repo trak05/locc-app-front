@@ -1,5 +1,7 @@
-import { Injectable } from '@angular/core';
-import { httpResource } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient, httpResource } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { Bien } from '../models/bien.model';
 
 @Injectable({
@@ -7,6 +9,7 @@ import { Bien } from '../models/bien.model';
 })
 export class BienService {
   private readonly API_BASE = 'http://localhost:8081/api';
+  private readonly http = inject(HttpClient);
 
   /* httpResource (Angular 21, comme ReservationService/ClubService côté
      padel-club-front) : re-fetch automatique, `.reload()` pour rafraîchir
@@ -14,4 +17,16 @@ export class BienService {
   biensResource = httpResource<Bien[]>(() => `${this.API_BASE}/biens`, {
     defaultValue: [],
   });
+
+  create(bien: Omit<Bien, 'id'>): Observable<Bien> {
+    return this.http
+      .post<Bien>(`${this.API_BASE}/biens`, bien)
+      .pipe(tap(() => this.biensResource.reload()));
+  }
+
+  update(id: number, bien: Omit<Bien, 'id'>): Observable<Bien> {
+    return this.http
+      .put<Bien>(`${this.API_BASE}/biens/${id}`, bien)
+      .pipe(tap(() => this.biensResource.reload()));
+  }
 }
