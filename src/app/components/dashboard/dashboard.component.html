@@ -1,4 +1,13 @@
-<h1>Bienvenue 👋</h1>
+<h1>
+  Bienvenue
+  @if (currentUser(); as user) {
+    @if (civiliteLabel(); as civilite) {
+      {{ civilite }}
+    }
+    {{ user.personalInfo.nom.toUpperCase() }}
+  }
+  👋
+</h1>
 <p class="subtitle">Vue d'ensemble de votre patrimoine locatif.</p>
 
 <div class="stats">

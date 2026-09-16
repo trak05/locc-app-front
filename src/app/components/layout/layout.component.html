@@ -4,6 +4,9 @@
   <a routerLink="/biens" routerLinkActive="active">Biens</a>
   <a routerLink="/locataires" routerLinkActive="active">Locataires</a>
   <a routerLink="/baux" routerLinkActive="active">Baux</a>
+  @if (initials()) {
+    <span class="user-badge">{{ initials() }}</span>
+  }
   <button type="button" class="topnav__logout" (click)="logout()">Déconnexion</button>
 </nav>
 

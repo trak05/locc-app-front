@@ -25,13 +25,27 @@
   }
 
   &__logout {
-    margin-left: auto;
     border: none;
     background: transparent;
     color: #d64545;
     font-weight: 600;
     cursor: pointer;
   }
+}
+
+.user-badge {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #0f5c56;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  flex-shrink: 0;
 }
 
 .content {

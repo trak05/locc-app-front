@@ -1,10 +1,13 @@
 export type Role = 'OWNER' | 'TENANT';
 
+export type Civilite = 'M' | 'MME';
+
 export interface PersonalInfo {
   nom: string;
   prenom: string;
   email: string;
   telephone?: string;
+  civilite?: Civilite;
 }
 
 export interface User {

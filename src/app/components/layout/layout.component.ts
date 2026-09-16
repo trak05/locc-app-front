@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { User } from '../../models/auth.model';
 
 /**
  * Shell v0 : juste une barre de nav minimale + router-outlet. Pas de
@@ -17,6 +18,18 @@ import { AuthService } from '../../services/auth.service';
 export class LayoutComponent {
   authService = inject(AuthService);
   private router = inject(Router);
+
+  currentUser = signal<User | null>(null);
+
+  initials = computed(() => {
+    const info = this.currentUser()?.personalInfo;
+    if (!info) return '';
+    return (info.nom.charAt(0) + info.prenom.charAt(0)).toUpperCase();
+  });
+
+  constructor() {
+    this.authService.getCurrentUser().subscribe((user) => this.currentUser.set(user));
+  }
 
   logout(): void {
     this.authService.logout();
