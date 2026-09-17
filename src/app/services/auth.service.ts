@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, httpResource } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable, switchMap, tap } from 'rxjs';
 import { User, JwtPayload, LoginRequest, LoginResponse } from '../models/auth.model';
@@ -13,17 +13,20 @@ export class AuthService {
   OWNER = 'OWNER';
   TENANT = 'TENANT';
 
+  /* httpResource (Angular 21, comme BienService/LocataireService/PaiementService) :
+     source de vérité unique pour l'utilisateur connecté, partagée par
+     LayoutComponent et DashboardComponent pour éviter un double appel HTTP
+     vers /connected-user à chaque arrivée sur le dashboard. */
+  currentUserResource = httpResource<User>(() => `${this.API_BASE}/connected-user`);
+
   login(request: LoginRequest): Observable<User> {
     return this.http.post<LoginResponse>(`${this.API_BASE}/login`, request).pipe(
       tap((response: LoginResponse) => {
         localStorage.setItem('token', response.token);
       }),
-      switchMap(() => this.getCurrentUser())
+      switchMap(() => this.http.get<User>(`${this.API_BASE}/connected-user`)),
+      tap(() => this.currentUserResource.reload())
     );
-  }
-
-  getCurrentUser(): Observable<User> {
-    return this.http.get<User>(`${this.API_BASE}/connected-user`);
   }
 
   getToken() {

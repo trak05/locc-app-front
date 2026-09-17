@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
 import { ConfirmPopup } from 'primeng/confirmpopup';
 import { LocataireService } from '../../services/locataire.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-locataires-list',
@@ -12,6 +13,7 @@ import { LocataireService } from '../../services/locataire.service';
   styleUrl: './locataires-list.component.scss',
 })
 export class LocatairesListComponent {
+  authService = inject(AuthService);
   locataireService = inject(LocataireService);
   private confirmationService = inject(ConfirmationService);
   locataires = this.locataireService.locatairesResource.value;

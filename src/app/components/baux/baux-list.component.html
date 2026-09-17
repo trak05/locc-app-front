@@ -1,36 +1,40 @@
-<h1>Baux : {{ baux().length }}</h1>
-
-@if (isLoading()) {
-  <p>Chargement...</p>
+@if (!authService.isOwner()) {
+  <p>Cette page est réservée aux propriétaires.</p>
 } @else {
-  <table>
-    <thead>
-      <tr>
-        <th>Bien</th>
-        <th>Locataire</th>
-        <th>Début</th>
-        <th>Fin</th>
-        <th>Loyer mensuel</th>
-        <th>Dépôt de garantie</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (bail of baux(); track bail.id) {
+  <h1>Baux : {{ baux().length }}</h1>
+
+  @if (isLoading()) {
+    <p>Chargement...</p>
+  } @else {
+    <table>
+      <thead>
         <tr>
-          <td>{{ bail.bien.nom }}</td>
-          <td>{{ bail.locataire.personalInfo.prenom }} {{ bail.locataire.personalInfo.nom }}</td>
-          <td>{{ bail.dateDebut }}</td>
-          <td>{{ bail.dateFin ?? '—' }}</td>
-          <td>{{ bail.loyerMensuel }} €</td>
-          <td>{{ bail.depotGarantie }} €</td>
-          <td><a [routerLink]="['/baux', bail.id, 'paiements']">Paiements</a></td>
+          <th>Bien</th>
+          <th>Locataire</th>
+          <th>Début</th>
+          <th>Fin</th>
+          <th>Loyer mensuel</th>
+          <th>Dépôt de garantie</th>
+          <th>Actions</th>
         </tr>
-      } @empty {
-        <tr>
-          <td colspan="7">Aucun bail pour l'instant.</td>
-        </tr>
-      }
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        @for (bail of baux(); track bail.id) {
+          <tr>
+            <td>{{ bail.bien.nom }}</td>
+            <td>{{ bail.locataire.personalInfo.prenom }} {{ bail.locataire.personalInfo.nom }}</td>
+            <td>{{ bail.dateDebut }}</td>
+            <td>{{ bail.dateFin ?? '—' }}</td>
+            <td>{{ bail.loyerMensuel }} €</td>
+            <td>{{ bail.depotGarantie }} €</td>
+            <td><a [routerLink]="['/baux', bail.id, 'paiements']">Paiements</a></td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="7">Aucun bail pour l'instant.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
 }
