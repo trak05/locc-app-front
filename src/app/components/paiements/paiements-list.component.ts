@@ -1,5 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { RouterLink, ActivatedRoute } from '@angular/router';
+import { ConfirmationService } from 'primeng/api';
+import { ConfirmPopup } from 'primeng/confirmpopup';
 import { PaiementService } from '../../services/paiement.service';
 import { AuthService } from '../../services/auth.service';
 import { Paiement } from '../../models/paiement.model';
@@ -7,12 +9,13 @@ import { Paiement } from '../../models/paiement.model';
 @Component({
   selector: 'app-paiements-list',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, ConfirmPopup],
   templateUrl: './paiements-list.component.html',
   styleUrl: './paiements-list.component.scss',
 })
 export class PaiementsListComponent {
   private route = inject(ActivatedRoute);
+  private confirmationService = inject(ConfirmationService);
   paiementService = inject(PaiementService);
   authService = inject(AuthService);
 
@@ -38,10 +41,18 @@ export class PaiementsListComponent {
     return `${paiement.montant} € (${paiement.datePaiement})`;
   }
 
-  delete(id: number): void {
-    if (!confirm('Supprimer ce paiement ?')) {
-      return;
-    }
-    this.paiementService.delete(id).subscribe();
+  confirmDelete(event: Event, id: number): void {
+    this.confirmationService.confirm({
+      target: event.currentTarget as EventTarget,
+      message: 'Supprimer ce paiement ?',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Supprimer',
+      rejectLabel: 'Annuler',
+      acceptButtonProps: { severity: 'danger', size: 'small' },
+      rejectButtonProps: { severity: 'secondary', size: 'small', outlined: true },
+      accept: () => {
+        this.paiementService.delete(id).subscribe();
+      },
+    });
   }
 }

@@ -2,6 +2,10 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessC
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideServiceWorker } from '@angular/service-worker';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { providePrimeNG } from 'primeng/config';
+import Aura from '@primeuix/themes/aura';
+import { ConfirmationService } from 'primeng/api';
 
 import { routes } from './app.routes';
 import { authInterceptor } from './interceptor/auth.interceptor';
@@ -18,5 +22,11 @@ export const appConfig: ApplicationConfig = {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000',
     }),
+    // PrimeNG : introduit uniquement pour la popup de confirmation (ConfirmDialog),
+    // pas de refonte du reste de l'UI — voir CLAUDE.md ("ajouter une UI library
+    // quand on construit vraiment un écran qui en a besoin").
+    provideAnimationsAsync(),
+    providePrimeNG({ theme: { preset: Aura } }),
+    ConfirmationService,
   ],
 };

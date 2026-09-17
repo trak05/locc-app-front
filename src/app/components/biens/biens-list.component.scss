@@ -24,3 +24,23 @@
     color: #0a3f3a;
   }
 }
+
+.actions {
+  display: inline-flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.delete-icon {
+  display: inline-flex;
+  align-items: center;
+  border: none;
+  background: transparent;
+  color: #d64545;
+  cursor: pointer;
+  padding: 0;
+
+  &:hover {
+    color: #a83232;
+  }
+}
