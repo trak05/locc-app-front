@@ -67,7 +67,12 @@
             <td>{{ paiement.commentaire ?? '—' }}</td>
             @if (authService.isOwner()) {
               <td class="actions">
-                <a [routerLink]="['/baux', bailId(), 'paiements', paiement.id, 'edit']">Modifier</a>
+                <a [routerLink]="['/baux', bailId(), 'paiements', paiement.id, 'edit']" class="edit-link" aria-label="Modifier ce paiement">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 20h9" />
+                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+                  </svg>
+                </a>
                 <button type="button" class="delete" (click)="delete(paiement.id)">Supprimer</button>
               </td>
             }
