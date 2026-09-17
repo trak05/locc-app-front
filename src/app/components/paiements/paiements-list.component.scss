@@ -1,0 +1,62 @@
+.list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.add-link {
+  color: #0f5c56;
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+section {
+  margin-top: 2rem;
+}
+
+h2 {
+  font-size: 1.1rem;
+  color: #12181b;
+  margin: 0 0 0.75rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+
+  &.paye {
+    background: #2e9e5b;
+  }
+
+  &.en_attente {
+    background: #d68a10;
+  }
+
+  &.en_retard {
+    background: #d64545;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.delete {
+  border: none;
+  background: transparent;
+  color: #d64545;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}

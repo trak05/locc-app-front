@@ -1,0 +1,83 @@
+<div class="list-header">
+  <h1>Paiements du bail #{{ bailId() }}</h1>
+  @if (authService.isOwner()) {
+    <a [routerLink]="['/baux', bailId(), 'paiements', 'new']" class="add-link">+ Ajouter un paiement</a>
+  }
+</div>
+
+<section class="echeancier">
+  <h2>Échéancier</h2>
+
+  @if (isLoadingEcheances()) {
+    <p>Chargement...</p>
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Période</th>
+          <th>Statut</th>
+          <th>Paiement associé</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (echeance of echeances(); track echeance.periode) {
+          <tr>
+            <td>{{ echeance.periode }}</td>
+            <td>
+              <span class="badge" [class]="echeance.statut.toLowerCase()">{{ echeance.statut }}</span>
+            </td>
+            <td>{{ paiementLabel(echeance.paiement) }}</td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="3">Aucune échéance pour l'instant.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>
+
+<section class="historique">
+  <h2>Historique des paiements</h2>
+
+  @if (isLoadingPaiements()) {
+    <p>Chargement...</p>
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Période</th>
+          <th>Montant</th>
+          <th>Date de paiement</th>
+          <th>Moyen</th>
+          <th>Commentaire</th>
+          @if (authService.isOwner()) {
+            <th>Actions</th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (paiement of paiements(); track paiement.id) {
+          <tr>
+            <td>{{ paiement.periode }}</td>
+            <td>{{ paiement.montant }} €</td>
+            <td>{{ paiement.datePaiement }}</td>
+            <td>{{ paiement.moyenPaiement ?? '—' }}</td>
+            <td>{{ paiement.commentaire ?? '—' }}</td>
+            @if (authService.isOwner()) {
+              <td class="actions">
+                <a [routerLink]="['/baux', bailId(), 'paiements', paiement.id, 'edit']">Modifier</a>
+                <button type="button" class="delete" (click)="delete(paiement.id)">Supprimer</button>
+              </td>
+            }
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6">Aucun paiement pour l'instant.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>

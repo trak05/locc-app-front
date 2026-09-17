@@ -42,7 +42,6 @@ export class DashboardComponent {
   isLoadingBaux = this.bailService.bauxResource.isLoading;
 
   bauxActifs = computed(
-    () => this.baux().filter((bail) => !bail.dateFin || new Date(bail.dateFin) > new Date()).length
-  )
-  ;
+    () => this.baux().filter((bail) => !bail.dateFin || new Date(bail.dateFin) > new Date()).length,
+  );
 }

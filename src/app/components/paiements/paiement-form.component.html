@@ -1,0 +1,41 @@
+<div class="paiement-form-page">
+  <h1>{{ isEditMode() ? 'Modifier le paiement' : 'Ajouter un paiement' }}</h1>
+
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <label>
+      Période
+      <input type="date" formControlName="periode" />
+    </label>
+
+    <label>
+      Montant (€)
+      <input type="number" formControlName="montant" />
+    </label>
+
+    <label>
+      Date de paiement
+      <input type="date" formControlName="datePaiement" />
+    </label>
+
+    <label>
+      Moyen de paiement
+      <input type="text" formControlName="moyenPaiement" />
+    </label>
+
+    <label>
+      Commentaire
+      <input type="text" formControlName="commentaire" />
+    </label>
+
+    @if (errorMessage()) {
+      <p class="error">{{ errorMessage() }}</p>
+    }
+
+    <div class="actions">
+      <a [routerLink]="['/baux', bailId(), 'paiements']" class="cancel">Annuler</a>
+      <button type="submit" class="submit" [disabled]="form.invalid || loading()">
+        {{ loading() ? 'Enregistrement...' : 'Enregistrer' }}
+      </button>
+    </div>
+  </form>
+</div>

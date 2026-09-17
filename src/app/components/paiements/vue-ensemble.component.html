@@ -1,0 +1,40 @@
+@if (!authService.isOwner()) {
+  <p>Cette page est réservée aux propriétaires.</p>
+} @else {
+  <h1>Suivi des paiements</h1>
+
+  @if (isLoading()) {
+    <p>Chargement...</p>
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Bien</th>
+          <th>Locataire</th>
+          <th>Statut période courante</th>
+          <th>Dernier paiement</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (suivi of suivis(); track suivi.bailId) {
+          <tr>
+            <td>{{ suivi.bien.nom }}</td>
+            <td>{{ suivi.locataire.personalInfo.prenom }} {{ suivi.locataire.personalInfo.nom }}</td>
+            <td>
+              <span class="badge" [class]="suivi.statutPeriodeCourante.toLowerCase()">
+                {{ suivi.statutPeriodeCourante }}
+              </span>
+            </td>
+            <td>{{ suivi.dateDernierPaiement ?? '—' }}</td>
+            <td><a [routerLink]="['/baux', suivi.bailId, 'paiements']">Détail</a></td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5">Aucun bail pour l'instant.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+}
