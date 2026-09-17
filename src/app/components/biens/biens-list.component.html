@@ -2,7 +2,12 @@
 
 <div class="list-header">
   <h1>Biens : {{ biens().length }}</h1>
-  <a routerLink="/biens/new" class="add-link">+ Ajouter un bien</a>
+  <a routerLink="/biens/new" class="add-button">
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 5v14M5 12h14" />
+    </svg>
+    Ajouter un bien
+  </a>
 </div>
 
 @if (isLoading()) {

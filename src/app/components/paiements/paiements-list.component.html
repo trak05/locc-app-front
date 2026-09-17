@@ -3,7 +3,12 @@
 <div class="list-header">
   <h1>Paiements du bail #{{ bailId() }}</h1>
   @if (authService.isOwner()) {
-    <a [routerLink]="['/baux', bailId(), 'paiements', 'new']" class="add-link">+ Ajouter un paiement</a>
+    <a [routerLink]="['/baux', bailId(), 'paiements', 'new']" class="add-button">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 5v14M5 12h14" />
+      </svg>
+      Ajouter un paiement
+    </a>
   }
 </div>
 
