@@ -17,6 +17,16 @@ export interface User {
   personalInfo: PersonalInfo;
 }
 
+export interface LocataireRequest {
+  username: string;
+  password?: string;
+  nom: string;
+  prenom: string;
+  email: string;
+  telephone?: string;
+  civilite?: Civilite;
+}
+
 export interface LoginRequest {
   username: string;
   password: string;

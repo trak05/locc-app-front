@@ -1,4 +1,7 @@
-<h1>Locataires : {{ locataires().length }}</h1>
+<div class="list-header">
+  <h1>Locataires : {{ locataires().length }}</h1>
+  <a routerLink="/locataires/new" class="add-link">+ Ajouter un locataire</a>
+</div>
 
 @if (isLoading()) {
   <p>Chargement...</p>
@@ -10,6 +13,7 @@
         <th>Prénom</th>
         <th>Email</th>
         <th>Téléphone</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -19,10 +23,11 @@
           <td>{{ locataire.personalInfo.prenom }}</td>
           <td>{{ locataire.personalInfo.email }}</td>
           <td>{{ locataire.personalInfo.telephone ?? '—' }}</td>
+          <td><a [routerLink]="['/locataires', locataire.id, 'edit']">Modifier</a></td>
         </tr>
       } @empty {
         <tr>
-          <td colspan="4">Aucun locataire pour l'instant.</td>
+          <td colspan="5">Aucun locataire pour l'instant.</td>
         </tr>
       }
     </tbody>
