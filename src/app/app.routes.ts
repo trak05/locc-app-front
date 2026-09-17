@@ -46,6 +46,26 @@ export const routes: Routes = [
         path: 'baux',
         loadComponent: () => import('./components/baux/baux-list.component').then((m) => m.BauxListComponent),
       },
+      {
+        path: 'baux/:id/paiements',
+        loadComponent: () =>
+          import('./components/paiements/paiements-list.component').then((m) => m.PaiementsListComponent),
+      },
+      {
+        path: 'baux/:id/paiements/new',
+        loadComponent: () =>
+          import('./components/paiements/paiement-form.component').then((m) => m.PaiementFormComponent),
+      },
+      {
+        path: 'baux/:id/paiements/:paiementId/edit',
+        loadComponent: () =>
+          import('./components/paiements/paiement-form.component').then((m) => m.PaiementFormComponent),
+      },
+      {
+        path: 'paiements/vue-ensemble',
+        loadComponent: () =>
+          import('./components/paiements/vue-ensemble.component').then((m) => m.VueEnsembleComponent),
+      },
     ],
   },
   {
