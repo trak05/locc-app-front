@@ -1,10 +1,9 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { BienService } from '../../services/bien.service';
 import { LocataireService } from '../../services/locataire.service';
 import { BailService } from '../../services/bail.service';
 import { AuthService } from '../../services/auth.service';
-import { User } from '../../models/auth.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,7 +18,7 @@ export class DashboardComponent {
   private bailService = inject(BailService);
   private authService = inject(AuthService);
 
-  currentUser = signal<User | null>(null);
+  currentUser = this.authService.currentUserResource.value;
 
   civiliteLabel = computed(() => {
     const civilite = this.currentUser()?.personalInfo.civilite;
@@ -27,10 +26,6 @@ export class DashboardComponent {
     if (civilite === 'M') return 'M.';
     return null;
   });
-
-  constructor() {
-    this.authService.getCurrentUser().subscribe((user) => this.currentUser.set(user));
-  }
 
   biens = this.bienService.biensResource.value;
   isLoadingBiens = this.bienService.biensResource.isLoading;
