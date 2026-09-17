@@ -10,3 +10,12 @@ export interface Bail {
   loyerMensuel: number;
   depotGarantie: number;
 }
+
+export interface BailRequest {
+  bienId: number;
+  locataireId: number;
+  dateDebut: string;
+  dateFin?: string;
+  loyerMensuel: number;
+  depotGarantie: number;
+}
