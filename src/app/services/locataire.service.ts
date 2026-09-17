@@ -26,4 +26,10 @@ export class LocataireService {
       .put<User>(`${this.API_BASE}/locataires/${id}`, locataire)
       .pipe(tap(() => this.locatairesResource.reload()));
   }
+
+  delete(id: number): Observable<void> {
+    return this.http
+      .delete<void>(`${this.API_BASE}/locataires/${id}`)
+      .pipe(tap(() => this.locatairesResource.reload()));
+  }
 }

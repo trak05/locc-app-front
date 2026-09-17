@@ -29,4 +29,10 @@ export class BienService {
       .put<Bien>(`${this.API_BASE}/biens/${id}`, bien)
       .pipe(tap(() => this.biensResource.reload()));
   }
+
+  delete(id: number): Observable<void> {
+    return this.http
+      .delete<void>(`${this.API_BASE}/biens/${id}`)
+      .pipe(tap(() => this.biensResource.reload()));
+  }
 }
