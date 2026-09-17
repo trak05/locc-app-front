@@ -1,0 +1,31 @@
+name: Auto PR develop -> main
+
+on:
+  push:
+    branches:
+      - develop
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  open-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create PR develop -> main if none open
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          existing=$(gh pr list --head develop --base main --state open --json url -q '.[0].url')
+          if [ -n "$existing" ]; then
+            echo "An open pull request from develop already exists: $existing"
+          else
+            gh pr create \
+              --base main \
+              --head develop \
+              --title "Merge develop into main" \
+              --body "Automatically opened by the auto-pr-develop-to-main workflow after a push to \`develop\`."
+          fi

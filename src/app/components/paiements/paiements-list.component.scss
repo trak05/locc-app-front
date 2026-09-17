@@ -60,3 +60,13 @@ h2 {
   cursor: pointer;
   padding: 0;
 }
+
+.edit-link {
+  display: inline-flex;
+  align-items: center;
+  color: #0f5c56;
+
+  &:hover {
+    color: #0a3f3a;
+  }
+}
