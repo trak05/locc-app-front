@@ -1,71 +1,75 @@
-<div class="locataire-form-page">
-  <h1>{{ isEditMode() ? 'Modifier le locataire' : 'Ajouter un locataire' }}</h1>
+@if (!authService.isOwner()) {
+  <p>Cette page est réservée aux propriétaires.</p>
+} @else {
+  <div class="locataire-form-page">
+    <h1>{{ isEditMode() ? 'Modifier le locataire' : 'Ajouter un locataire' }}</h1>
 
-  <form [formGroup]="form" (ngSubmit)="save()">
-    <label>
-      Nom d'utilisateur
-      <input type="text" formControlName="username" autocomplete="username" />
-    </label>
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <label>
+        Nom d'utilisateur
+        <input type="text" formControlName="username" autocomplete="username" />
+      </label>
 
-    <label>
-      Mot de passe
-      <div class="password-field">
-        <input
-          [type]="showPassword() ? 'text' : 'password'"
-          formControlName="password"
-          autocomplete="new-password"
-          [placeholder]="isEditMode() ? 'Laisser vide pour ne pas changer' : ''"
-        />
-        <button
-          type="button"
-          class="toggle-visibility"
-          (click)="togglePassword()"
-          [attr.aria-label]="showPassword() ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
-        >
-          {{ showPassword() ? '🙈' : '👁️' }}
+      <label>
+        Mot de passe
+        <div class="password-field">
+          <input
+            [type]="showPassword() ? 'text' : 'password'"
+            formControlName="password"
+            autocomplete="new-password"
+            [placeholder]="isEditMode() ? 'Laisser vide pour ne pas changer' : ''"
+          />
+          <button
+            type="button"
+            class="toggle-visibility"
+            (click)="togglePassword()"
+            [attr.aria-label]="showPassword() ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
+          >
+            {{ showPassword() ? '🙈' : '👁️' }}
+          </button>
+        </div>
+      </label>
+
+      <label>
+        Nom
+        <input type="text" formControlName="nom" />
+      </label>
+
+      <label>
+        Prénom
+        <input type="text" formControlName="prenom" />
+      </label>
+
+      <label>
+        Email
+        <input type="email" formControlName="email" />
+      </label>
+
+      <label>
+        Téléphone
+        <input type="text" formControlName="telephone" />
+      </label>
+
+      <label>
+        Civilité
+        <select formControlName="civilite">
+          <option [ngValue]="null">—</option>
+          @for (c of civilites; track c) {
+            <option [value]="c">{{ c === 'MME' ? 'Mme' : 'M.' }}</option>
+          }
+        </select>
+      </label>
+
+      @if (errorMessage()) {
+        <p class="error">{{ errorMessage() }}</p>
+      }
+
+      <div class="actions">
+        <a routerLink="/locataires" class="cancel">Annuler</a>
+        <button type="submit" class="submit" [disabled]="form.invalid || loading()">
+          {{ loading() ? 'Enregistrement...' : 'Enregistrer' }}
         </button>
       </div>
-    </label>
-
-    <label>
-      Nom
-      <input type="text" formControlName="nom" />
-    </label>
-
-    <label>
-      Prénom
-      <input type="text" formControlName="prenom" />
-    </label>
-
-    <label>
-      Email
-      <input type="email" formControlName="email" />
-    </label>
-
-    <label>
-      Téléphone
-      <input type="text" formControlName="telephone" />
-    </label>
-
-    <label>
-      Civilité
-      <select formControlName="civilite">
-        <option [ngValue]="null">—</option>
-        @for (c of civilites; track c) {
-          <option [value]="c">{{ c === 'MME' ? 'Mme' : 'M.' }}</option>
-        }
-      </select>
-    </label>
-
-    @if (errorMessage()) {
-      <p class="error">{{ errorMessage() }}</p>
-    }
-
-    <div class="actions">
-      <a routerLink="/locataires" class="cancel">Annuler</a>
-      <button type="submit" class="submit" [disabled]="form.invalid || loading()">
-        {{ loading() ? 'Enregistrement...' : 'Enregistrer' }}
-      </button>
-    </div>
-  </form>
-</div>
+    </form>
+  </div>
+}

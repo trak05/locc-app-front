@@ -3,6 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { LocataireService } from '../../services/locataire.service';
 import { Civilite } from '../../models/auth.model';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-locataire-form',
@@ -12,6 +13,7 @@ import { Civilite } from '../../models/auth.model';
   styleUrl: './locataire-form.component.scss',
 })
 export class LocataireFormComponent {
+  authService = inject(AuthService);
   private fb = inject(FormBuilder);
   private locataireService = inject(LocataireService);
   private route = inject(ActivatedRoute);

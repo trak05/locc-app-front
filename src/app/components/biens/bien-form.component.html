@@ -1,55 +1,59 @@
-<div class="bien-form-page">
-  <h1>{{ isEditMode() ? 'Modifier le bien' : 'Ajouter un bien' }}</h1>
+@if (!authService.isOwner()) {
+  <p>Cette page est réservée aux propriétaires.</p>
+} @else {
+  <div class="bien-form-page">
+    <h1>{{ isEditMode() ? 'Modifier le bien' : 'Ajouter un bien' }}</h1>
 
-  <form [formGroup]="form" (ngSubmit)="save()">
-    <label>
-      Nom
-      <input type="text" formControlName="nom" />
-    </label>
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <label>
+        Nom
+        <input type="text" formControlName="nom" />
+      </label>
 
-    <label>
-      Adresse
-      <input type="text" formControlName="adresse" />
-    </label>
+      <label>
+        Adresse
+        <input type="text" formControlName="adresse" />
+      </label>
 
-    <label>
-      Ville
-      <input type="text" formControlName="ville" />
-    </label>
+      <label>
+        Ville
+        <input type="text" formControlName="ville" />
+      </label>
 
-    <label>
-      Code postal
-      <input type="text" formControlName="codePostal" />
-    </label>
+      <label>
+        Code postal
+        <input type="text" formControlName="codePostal" />
+      </label>
 
-    <label>
-      Type
-      <select formControlName="type">
-        @for (t of types; track t) {
-          <option [value]="t">{{ t }}</option>
-        }
-      </select>
-    </label>
+      <label>
+        Type
+        <select formControlName="type">
+          @for (t of types; track t) {
+            <option [value]="t">{{ t }}</option>
+          }
+        </select>
+      </label>
 
-    <label>
-      Surface (m²)
-      <input type="number" formControlName="surface" />
-    </label>
+      <label>
+        Surface (m²)
+        <input type="number" formControlName="surface" />
+      </label>
 
-    <label>
-      Nombre de pièces
-      <input type="number" formControlName="nombrePieces" />
-    </label>
+      <label>
+        Nombre de pièces
+        <input type="number" formControlName="nombrePieces" />
+      </label>
 
-    @if (errorMessage()) {
-      <p class="error">{{ errorMessage() }}</p>
-    }
+      @if (errorMessage()) {
+        <p class="error">{{ errorMessage() }}</p>
+      }
 
-    <div class="actions">
-      <a routerLink="/biens" class="cancel">Annuler</a>
-      <button type="submit" class="submit" [disabled]="form.invalid || loading()">
-        {{ loading() ? 'Enregistrement...' : 'Enregistrer' }}
-      </button>
-    </div>
-  </form>
-</div>
+      <div class="actions">
+        <a routerLink="/biens" class="cancel">Annuler</a>
+        <button type="submit" class="submit" [disabled]="form.invalid || loading()">
+          {{ loading() ? 'Enregistrement...' : 'Enregistrer' }}
+        </button>
+      </div>
+    </form>
+  </div>
+}

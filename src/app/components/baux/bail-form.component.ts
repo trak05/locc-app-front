@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { BailService } from '../../services/bail.service';
 import { BienService } from '../../services/bien.service';
 import { LocataireService } from '../../services/locataire.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-bail-form',
@@ -13,6 +14,7 @@ import { LocataireService } from '../../services/locataire.service';
   styleUrl: './bail-form.component.scss',
 })
 export class BailFormComponent {
+  authService = inject(AuthService);
   private fb = inject(FormBuilder);
   private bailService = inject(BailService);
   private router = inject(Router);

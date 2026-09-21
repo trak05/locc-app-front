@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
 import { ConfirmPopup } from 'primeng/confirmpopup';
 import { BienService } from '../../services/bien.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-biens-list',
@@ -12,6 +13,7 @@ import { BienService } from '../../services/bien.service';
   styleUrl: './biens-list.component.scss',
 })
 export class BiensListComponent {
+  authService = inject(AuthService);
   bienService = inject(BienService);
   private confirmationService = inject(ConfirmationService);
   biens = this.bienService.biensResource.value;
