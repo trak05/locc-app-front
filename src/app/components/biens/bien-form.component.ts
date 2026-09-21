@@ -3,6 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BienService } from '../../services/bien.service';
 import { TypeBien } from '../../models/bien.model';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-bien-form',
@@ -12,6 +13,7 @@ import { TypeBien } from '../../models/bien.model';
   styleUrl: './bien-form.component.scss',
 })
 export class BienFormComponent {
+  authService = inject(AuthService);
   private fb = inject(FormBuilder);
   private bienService = inject(BienService);
   private route = inject(ActivatedRoute);

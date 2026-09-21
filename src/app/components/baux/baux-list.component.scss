@@ -1,0 +1,22 @@
+.list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.add-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #d64545;
+  color: white;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+
+  &:hover {
+    background: #a83232;
+  }
+}

@@ -1,0 +1,60 @@
+@if (!authService.isOwner()) {
+  <p>Cette page est réservée aux propriétaires.</p>
+} @else {
+  <div class="bail-form-page">
+    <h1>Ajouter un bail</h1>
+
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <label>
+        Bien
+        <select formControlName="bienId">
+          <option [value]="null" disabled>Sélectionner un bien</option>
+          @for (bien of biens(); track bien.id) {
+            <option [value]="bien.id">{{ bien.nom }}</option>
+          }
+        </select>
+      </label>
+
+      <label>
+        Locataire
+        <select formControlName="locataireId">
+          <option [value]="null" disabled>Sélectionner un locataire</option>
+          @for (locataire of locataires(); track locataire.id) {
+            <option [value]="locataire.id">{{ locataire.personalInfo.prenom }} {{ locataire.personalInfo.nom }}</option>
+          }
+        </select>
+      </label>
+
+      <label>
+        Date de début
+        <input type="date" formControlName="dateDebut" />
+      </label>
+
+      <label>
+        Date de fin
+        <input type="date" formControlName="dateFin" />
+      </label>
+
+      <label>
+        Loyer mensuel (€)
+        <input type="number" formControlName="loyerMensuel" />
+      </label>
+
+      <label>
+        Dépôt de garantie (€)
+        <input type="number" formControlName="depotGarantie" />
+      </label>
+
+      @if (errorMessage()) {
+        <p class="error">{{ errorMessage() }}</p>
+      }
+
+      <div class="actions">
+        <a routerLink="/baux" class="cancel">Annuler</a>
+        <button type="submit" class="submit" [disabled]="form.invalid || loading()">
+          {{ loading() ? 'Enregistrement...' : 'Enregistrer' }}
+        </button>
+      </div>
+    </form>
+  </div>
+}

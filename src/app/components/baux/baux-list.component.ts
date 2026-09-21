@@ -8,6 +8,7 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
   imports: [RouterLink],
   templateUrl: './baux-list.component.html',
+  styleUrl: './baux-list.component.scss',
 })
 export class BauxListComponent {
   authService = inject(AuthService);

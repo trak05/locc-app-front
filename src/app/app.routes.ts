@@ -47,6 +47,10 @@ export const routes: Routes = [
         loadComponent: () => import('./components/baux/baux-list.component').then((m) => m.BauxListComponent),
       },
       {
+        path: 'baux/new',
+        loadComponent: () => import('./components/baux/bail-form.component').then((m) => m.BailFormComponent),
+      },
+      {
         path: 'baux/:id/paiements',
         loadComponent: () =>
           import('./components/paiements/paiements-list.component').then((m) => m.PaiementsListComponent),
