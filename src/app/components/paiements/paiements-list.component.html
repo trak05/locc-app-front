@@ -24,6 +24,7 @@
           <th>Période</th>
           <th>Statut</th>
           <th>Paiement associé</th>
+          <th>Avis</th>
         </tr>
       </thead>
       <tbody>
@@ -34,10 +35,22 @@
               <span class="badge" [class]="echeance.statut.toLowerCase()">{{ echeance.statut }}</span>
             </td>
             <td>{{ paiementLabel(echeance.paiement) }}</td>
+            <td>
+              @if (echeance.statut !== 'PAYE') {
+                <button type="button" class="download-icon" (click)="telechargerAvisEcheance(echeance.periode)" aria-label="Télécharger l'avis d'échéance">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="12" y1="18" x2="12" y2="12" />
+                    <polyline points="9 15 12 18 15 15" />
+                  </svg>
+                </button>
+              }
+            </td>
           </tr>
         } @empty {
           <tr>
-            <td colspan="3">Aucune échéance pour l'instant.</td>
+            <td colspan="4">Aucune échéance pour l'instant.</td>
           </tr>
         }
       </tbody>
@@ -59,6 +72,7 @@
           <th>Date de paiement</th>
           <th>Moyen</th>
           <th>Commentaire</th>
+          <th>Reçu</th>
           @if (authService.isOwner()) {
             <th>Actions</th>
           }
@@ -72,6 +86,16 @@
             <td>{{ paiement.datePaiement }}</td>
             <td>{{ paiement.moyenPaiement ?? '—' }}</td>
             <td>{{ paiement.commentaire ?? '—' }}</td>
+            <td>
+              <button type="button" class="download-icon" (click)="telechargerRecu(paiement.id)" aria-label="Télécharger le reçu">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                  <polyline points="14 2 14 8 20 8" />
+                  <line x1="12" y1="18" x2="12" y2="12" />
+                  <polyline points="9 15 12 18 15 15" />
+                </svg>
+              </button>
+            </td>
             @if (authService.isOwner()) {
               <td>
                 <span class="actions">
@@ -93,7 +117,55 @@
           </tr>
         } @empty {
           <tr>
-            <td colspan="6">Aucun paiement pour l'instant.</td>
+            <td [attr.colspan]="authService.isOwner() ? 7 : 6">Aucun paiement pour l'instant.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>
+
+<section class="historique-avis">
+  <h2>Historique des avis d'échéance</h2>
+
+  @if (isLoadingHistoriqueAvis()) {
+    <p>Chargement...</p>
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Période</th>
+          <th>Date de génération</th>
+          <th>Origine</th>
+          <th>Statut</th>
+          <th>Avis</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (avis of historiqueAvis(); track avis.id) {
+          <tr>
+            <td>{{ avis.periode }}</td>
+            <td>{{ avis.dateGeneration | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+            <td>
+              <span class="badge origine" [class]="avis.origine.toLowerCase()">{{ avis.origine }}</span>
+            </td>
+            <td>
+              <span class="badge" [class]="avis.statut.toLowerCase()">{{ avis.statut }}</span>
+            </td>
+            <td>
+              <button type="button" class="download-icon" (click)="telechargerAvisEcheance(avis.periode)" aria-label="Télécharger l'avis d'échéance">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                  <polyline points="14 2 14 8 20 8" />
+                  <line x1="12" y1="18" x2="12" y2="12" />
+                  <polyline points="9 15 12 18 15 15" />
+                </svg>
+              </button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5">Aucun avis d'échéance généré pour l'instant.</td>
           </tr>
         }
       </tbody>

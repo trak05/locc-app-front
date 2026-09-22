@@ -2,7 +2,8 @@ import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, httpResource } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { Echeance, Paiement, PaiementRequest, SuiviBail } from '../models/paiement.model';
+import { AvisEcheance, Echeance, Paiement, PaiementRequest, SuiviBail } from '../models/paiement.model';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +11,7 @@ import { Echeance, Paiement, PaiementRequest, SuiviBail } from '../models/paieme
 export class PaiementService {
   private readonly API_BASE = 'http://localhost:8081/api';
   private readonly http = inject(HttpClient);
+  private readonly authService = inject(AuthService);
 
   /* httpResource paramétré par bailId : la factory retourne `undefined` tant
      qu'aucun bail n'est sélectionné, ce qui laisse la resource idle (pas de
@@ -34,6 +36,16 @@ export class PaiementService {
   vueEnsembleResource = httpResource<SuiviBail[]>(() => `${this.API_BASE}/paiements/vue-ensemble`, {
     defaultValue: [],
   });
+
+  historiqueAvisResource = httpResource<AvisEcheance[]>(
+    () => (this.bailId() !== null ? `${this.API_BASE}/baux/${this.bailId()}/avis-echeance` : undefined),
+    { defaultValue: [] }
+  );
+
+  avisRecentsResource = httpResource<AvisEcheance[]>(
+    () => (this.authService.isOwner() ? `${this.API_BASE}/paiements/avis-recents` : undefined),
+    { defaultValue: [] }
+  );
 
   create(bailId: number, paiement: PaiementRequest): Observable<Paiement> {
     return this.http.post<Paiement>(`${this.API_BASE}/baux/${bailId}/paiements`, paiement).pipe(
@@ -60,5 +72,13 @@ export class PaiementService {
         this.echeancierResource.reload();
       })
     );
+  }
+
+  telechargerRecu(id: number): Observable<Blob> {
+    return this.http.get(`${this.API_BASE}/paiements/${id}/recu`, { responseType: 'blob' });
+  }
+
+  telechargerAvisEcheance(bailId: number, periode: string): Observable<Blob> {
+    return this.http.get(`${this.API_BASE}/baux/${bailId}/echeances/${periode}/avis`, { responseType: 'blob' });
   }
 }
