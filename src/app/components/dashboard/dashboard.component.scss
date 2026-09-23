@@ -16,6 +16,26 @@ h2 {
   color: #67736e;
 }
 
+.banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1.5rem;
+  padding: 0.85rem 1.25rem;
+  border-radius: 8px;
+  background: #eaf4f2;
+  border: 1px solid #0f5c56;
+  color: #0f5c56;
+  font-size: 0.9rem;
+
+  a {
+    color: #0f5c56;
+    font-weight: 600;
+    text-decoration: underline;
+  }
+}
+
 .stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));

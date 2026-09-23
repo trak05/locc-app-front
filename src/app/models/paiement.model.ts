@@ -35,3 +35,25 @@ export interface SuiviBail {
   statutPeriodeCourante: StatutPaiement;
   dateDernierPaiement?: string;
 }
+
+export type OrigineAvis = 'MANUEL' | 'AUTOMATIQUE';
+
+export interface AvisEcheance {
+  id: number;
+  bailId: number;
+  periode: string;
+  dateGeneration: string;
+  origine: OrigineAvis;
+  statut: StatutPaiement;
+}
+
+export interface AvisNotification {
+  id: number;
+  bailId: number;
+  bien: Bien;
+  locataire: User;
+  periode: string;
+  dateGeneration: string;
+  origine: OrigineAvis;
+  lu: boolean;
+}

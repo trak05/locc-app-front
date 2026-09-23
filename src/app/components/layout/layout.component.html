@@ -7,10 +7,15 @@
   @if (authService.isOwner()) {
     <a routerLink="/paiements/vue-ensemble" routerLinkActive="active">Paiements</a>
   }
-  @if (initials()) {
-    <span class="user-badge">{{ initials() }}</span>
-  }
-  <button type="button" class="topnav__logout" (click)="logout()">Déconnexion</button>
+  <span class="topnav__right">
+    @if (authService.isOwner()) {
+      <app-notification-bell />
+    }
+    @if (initials()) {
+      <span class="user-badge">{{ initials() }}</span>
+    }
+    <button type="button" class="topnav__logout" (click)="logout()">Déconnexion</button>
+  </span>
 </nav>
 
 <main class="content">

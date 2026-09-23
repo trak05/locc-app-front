@@ -33,8 +33,14 @@
   }
 }
 
-.user-badge {
+.topnav__right {
   margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-badge {
   display: flex;
   align-items: center;
   justify-content: center;

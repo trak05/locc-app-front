@@ -10,6 +10,14 @@
 </h1>
 <p class="subtitle">Vue d'ensemble de votre patrimoine locatif.</p>
 
+@if (authService.isOwner() && avisRecents().length > 0) {
+  <div class="banner">
+    {{ avisRecents().length }} avis d'échéance {{ avisRecents().length > 1 ? 'ont été générés' : 'a été généré' }}
+    automatiquement aujourd'hui.
+    <a routerLink="/paiements/vue-ensemble">Voir le détail</a>
+  </div>
+}
+
 <div class="stats">
   <div class="stat-card">
     <span class="stat-card__label">Biens</span>

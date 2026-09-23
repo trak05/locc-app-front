@@ -1,0 +1,134 @@
+.notification-bell {
+  position: relative;
+  display: inline-flex;
+}
+
+.bell-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #12181b;
+  cursor: pointer;
+  padding: 0.25rem;
+
+  &:hover {
+    color: #0f5c56;
+  }
+}
+
+.badge-count {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: #d64545;
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  width: 320px;
+  max-height: 360px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #dde3dd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 20;
+  padding: 0.5rem;
+}
+
+.empty {
+  margin: 0;
+  padding: 0.75rem;
+  color: #67736e;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  border: 1px solid #dde3dd;
+  border-radius: 8px;
+  padding: 0.5rem 0.6rem;
+
+  &.non-lue {
+    background: #fdf1f1;
+    border-color: #f0c9c9;
+  }
+}
+
+.dot-non-lue {
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  margin-top: 0.3rem;
+  border-radius: 999px;
+  background: #d64545;
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+}
+
+.line1 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.line2 {
+  font-size: 0.8rem;
+  color: #12181b;
+  opacity: 0.8;
+}
+
+.line3 {
+  font-size: 0.75rem;
+  color: #67736e;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: white;
+
+  &.manuel {
+    background: #67736e;
+  }
+
+  &.automatique {
+    background: #0f5c56;
+  }
+}

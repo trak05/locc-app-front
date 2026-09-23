@@ -9,7 +9,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  background: #d64545;
+  background: #0f5c56;
   color: white;
   font-weight: 600;
   text-decoration: none;
@@ -17,7 +17,7 @@
   border-radius: 8px;
 
   &:hover {
-    background: #a83232;
+    background: #0d4d48;
   }
 }
 
@@ -50,6 +50,14 @@ h2 {
   &.en_retard {
     background: #d64545;
   }
+
+  &.manuel {
+    background: #67736e;
+  }
+
+  &.automatique {
+    background: #0f5c56;
+  }
 }
 
 .actions {
@@ -76,6 +84,20 @@ h2 {
   display: inline-flex;
   align-items: center;
   color: #0f5c56;
+
+  &:hover {
+    color: #0a3f3a;
+  }
+}
+
+.download-icon {
+  display: inline-flex;
+  align-items: center;
+  border: none;
+  background: transparent;
+  color: #0f5c56;
+  cursor: pointer;
+  padding: 0;
 
   &:hover {
     color: #0a3f3a;
