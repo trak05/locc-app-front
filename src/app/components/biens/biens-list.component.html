@@ -12,6 +12,14 @@
   }
 </div>
 
+@if (authService.isOwner()) {
+  @if (tauxOccupation(); as taux) {
+    <p class="periode">
+      Taux d'occupation du {{ taux.dateDebut | date: 'dd/MM/yyyy' }} au {{ taux.dateFin | date: 'dd/MM/yyyy' }}
+    </p>
+  }
+}
+
 @if (isLoading()) {
   <p>Chargement...</p>
 } @else {
@@ -23,6 +31,9 @@
         <th>Ville</th>
         <th>Type</th>
         <th>Pièces</th>
+        @if (authService.isOwner()) {
+          <th>Occupation</th>
+        }
         <th>Actions</th>
       </tr>
     </thead>
@@ -34,6 +45,16 @@
           <td>{{ bien.ville }}</td>
           <td>{{ bien.type }}</td>
           <td>{{ bien.nombrePieces ?? '—' }}</td>
+          @if (authService.isOwner()) {
+            @let taux = tauxParBien().get(bien.id);
+            <td>
+              @if (taux !== undefined) {
+                {{ taux | number: '1.0-0' }}&nbsp;%
+              } @else {
+                —
+              }
+            </td>
+          }
           <td>
             @if (authService.isOwner()) {
               <span class="actions">
@@ -55,7 +76,7 @@
         </tr>
       } @empty {
         <tr>
-          <td colspan="6">Aucun bien pour l'instant.</td>
+          <td [attr.colspan]="authService.isOwner() ? 7 : 6">Aucun bien enregistré.</td>
         </tr>
       }
     </tbody>
