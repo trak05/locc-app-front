@@ -7,6 +7,18 @@ export const routes: Routes = [
     loadComponent: () => import('./components/auth/auth.component').then((m) => m.AuthComponent),
   },
   {
+    path: 'mot-de-passe-oublie',
+    loadComponent: () =>
+      import('./components/auth/mot-de-passe-oublie.component').then((m) => m.MotDePasseOublieComponent),
+  },
+  {
+    path: 'reinitialiser-mot-de-passe',
+    loadComponent: () =>
+      import('./components/auth/reinitialiser-mot-de-passe.component').then(
+        (m) => m.ReinitialiserMotDePasseComponent,
+      ),
+  },
+  {
     path: '',
     canActivate: [authGuard],
     loadComponent: () => import('./components/layout/layout.component').then((m) => m.LayoutComponent),
@@ -69,6 +81,16 @@ export const routes: Routes = [
         path: 'paiements/vue-ensemble',
         loadComponent: () =>
           import('./components/paiements/vue-ensemble.component').then((m) => m.VueEnsembleComponent),
+      },
+      {
+        path: 'compte/mot-de-passe',
+        loadComponent: () =>
+          import('./components/compte/mot-de-passe-form.component').then((m) => m.MotDePasseFormComponent),
+      },
+      {
+        path: 'compte/profil',
+        loadComponent: () =>
+          import('./components/compte/profil-form.component').then((m) => m.ProfilFormComponent),
       },
     ],
   },

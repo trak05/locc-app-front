@@ -12,6 +12,12 @@ body {
   background: #f4f6f5;
 }
 
+/* LOC-15 : fond de la page Accueil (tableau de bord) uniquement.
+   Posé sur body pour couvrir toute la fenêtre, défilement et mobile compris. */
+body:has(app-dashboard) {
+  background: #eef6f4;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;

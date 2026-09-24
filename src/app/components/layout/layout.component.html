@@ -12,7 +12,7 @@
       <app-notification-bell />
     }
     @if (initials()) {
-      <span class="user-badge">{{ initials() }}</span>
+      <a routerLink="/compte/profil" class="user-badge" title="Mon profil" aria-label="Mon profil">{{ initials() }}</a>
     }
     <button type="button" class="topnav__logout" (click)="logout()">Déconnexion</button>
   </span>

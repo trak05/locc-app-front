@@ -1,12 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-auth',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.scss',
 })
@@ -14,8 +14,14 @@ export class AuthComponent {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   errorMessage = signal<string | null>(null);
+  successMessage = signal<string | null>(
+    this.route.snapshot.queryParamMap.has('motDePasseReinitialise')
+      ? 'Votre mot de passe a été réinitialisé. Vous pouvez vous connecter avec votre nouveau mot de passe.'
+      : null,
+  );
   loading = signal(false);
   showPassword = signal(false);
 
@@ -35,6 +41,7 @@ export class AuthComponent {
 
     this.loading.set(true);
     this.errorMessage.set(null);
+    this.successMessage.set(null);
 
     this.authService.login(this.form.getRawValue()).subscribe({
       next: () => {

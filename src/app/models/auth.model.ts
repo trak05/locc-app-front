@@ -27,6 +27,11 @@ export interface LocataireRequest {
   civilite?: Civilite;
 }
 
+export interface ChangePasswordRequest {
+  currentPassword: string;
+  newPassword: string;
+}
+
 export interface LoginRequest {
   username: string;
   password: string;
@@ -34,6 +39,8 @@ export interface LoginRequest {
 
 export interface LoginResponse {
   token: string;
+  /** Connexion réussie précédente (ISO-8601 UTC), null si première connexion. */
+  derniereConnexion: string | null;
 }
 
 /** Payload décodé du JWT (voir AuthService.isTokenExpired). */
@@ -42,4 +49,12 @@ export interface JwtPayload {
   role: Role;
   iat: number;
   exp: number;
+}
+
+export interface ProfilRequest {
+  nom: string;
+  prenom: string;
+  email: string;
+  telephone?: string;
+  civilite?: Civilite;
 }

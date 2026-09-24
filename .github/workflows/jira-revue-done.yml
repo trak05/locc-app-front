@@ -1,0 +1,59 @@
+name: Jira - Review Done on merge
+
+# When a feature/LOC-<N> pull request is merged into develop, move Jira ticket
+# LOC-<N> to the "Review Done" status. Front and back each have this workflow:
+# the first of the two merges moves the ticket, the second one sees it already
+# there and does nothing.
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - develop
+
+permissions:
+  contents: read
+
+jobs:
+  revue-done:
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'feature/LOC-')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Move the Jira ticket to "Review Done"
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          TARGET_STATUS: Review Done
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "$JIRA_BASE_URL" ] || [ -z "$JIRA_EMAIL" ] || [ -z "$JIRA_API_TOKEN" ]; then
+            echo "::error::Missing secret JIRA_BASE_URL, JIRA_EMAIL or JIRA_API_TOKEN"
+            exit 1
+          fi
+
+          key="${HEAD_REF#feature/}"
+          api="${JIRA_BASE_URL%/}/rest/api/3/issue/$key"
+          auth="$JIRA_EMAIL:$JIRA_API_TOKEN"
+
+          current=$(curl -sSf -u "$auth" -H "Accept: application/json" "$api?fields=status" | jq -r '.fields.status.name')
+          echo "$key is currently \"$current\""
+          if [ "$current" = "$TARGET_STATUS" ]; then
+            echo "Already \"$TARGET_STATUS\", nothing to do."
+            exit 0
+          fi
+
+          # Transition ids differ between projects: look the transition up by its target status name.
+          transition=$(curl -sSf -u "$auth" -H "Accept: application/json" "$api/transitions" \
+            | jq -r --arg s "$TARGET_STATUS" '.transitions[] | select(.to.name == $s) | .id' | head -n 1)
+          if [ -z "$transition" ]; then
+            echo "::error::No transition to \"$TARGET_STATUS\" available for $key (does the status exist in the Jira workflow?)"
+            exit 1
+          fi
+
+          curl -sSf -u "$auth" -X POST -H "Content-Type: application/json" \
+            -d "{\"transition\":{\"id\":\"$transition\"}}" "$api/transitions"
+          echo "$key moved to \"$TARGET_STATUS\"."
