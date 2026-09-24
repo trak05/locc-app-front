@@ -45,6 +45,10 @@
           </div>
         </label>
 
+        @if (successMessage()) {
+          <p class="success">{{ successMessage() }}</p>
+        }
+
         @if (errorMessage()) {
           <p class="error">{{ errorMessage() }}</p>
         }
@@ -55,7 +59,7 @@
       </form>
 
       <div class="links">
-        <a href="#">Mot de passe oublié</a>
+        <a routerLink="/mot-de-passe-oublie">Mot de passe oublié ?</a>
         <a href="#">Mentions légales</a>
       </div>
     </div>
