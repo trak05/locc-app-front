@@ -1,7 +1,7 @@
-name: Jira - Revue done on merge
+name: Jira - Review Done on merge
 
 # When a feature/LOC-<N> pull request is merged into develop, move Jira ticket
-# LOC-<N> to the "Revue done" status. Front and back each have this workflow:
+# LOC-<N> to the "Review Done" status. Front and back each have this workflow:
 # the first of the two merges moves the ticket, the second one sees it already
 # there and does nothing.
 
@@ -20,12 +20,12 @@ jobs:
     if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'feature/LOC-')
     runs-on: ubuntu-latest
     steps:
-      - name: Move the Jira ticket to "Revue done"
+      - name: Move the Jira ticket to "Review Done"
         env:
           JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
           JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
           JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
-          TARGET_STATUS: Revue done
+          TARGET_STATUS: Review Done
           HEAD_REF: ${{ github.event.pull_request.head.ref }}
         run: |
           set -euo pipefail
