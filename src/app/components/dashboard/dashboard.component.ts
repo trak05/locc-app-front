@@ -24,6 +24,7 @@ export class DashboardComponent {
   private notificationService = inject(NotificationService);
 
   currentUser = this.authService.currentUserResource.value;
+  derniereConnexion = this.authService.derniereConnexion;
 
   civiliteLabel = computed(() => {
     const civilite = this.currentUser()?.personalInfo.civilite;
