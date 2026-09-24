@@ -42,6 +42,26 @@
     <span class="stat-card__label">Baux actifs</span>
     <span class="stat-card__value">{{ isLoadingBaux() ? '…' : bauxActifs() }}</span>
   </div>
+
+  @if (authService.isOwner()) {
+    <div class="stat-card">
+      <span class="stat-card__label">Taux d'occupation</span>
+      @if (isLoadingTaux()) {
+        <span class="stat-card__value">…</span>
+      } @else if (tauxOccupation(); as taux) {
+        @if (taux.tauxGlobal !== null) {
+          <span class="stat-card__value">{{ taux.tauxGlobal | number: '1.0-0' }}&nbsp;%</span>
+          <span class="stat-card__hint">
+            du {{ taux.dateDebut | date: 'dd/MM/yyyy' }} au {{ taux.dateFin | date: 'dd/MM/yyyy' }}
+          </span>
+        } @else {
+          <span class="stat-card__empty">Aucun bien enregistré</span>
+        }
+      } @else {
+        <span class="stat-card__value">—</span>
+      }
+    </div>
+  }
 </div>
 
 <h2>Accès rapide</h2>

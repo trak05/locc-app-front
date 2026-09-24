@@ -69,6 +69,17 @@ h2 {
     font-weight: 700;
     color: #0f5c56;
   }
+
+  &__hint {
+    font-size: 0.8rem;
+    color: #67736e;
+  }
+
+  &__empty {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #67736e;
+  }
 }
 
 .quick-links {

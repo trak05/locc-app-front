@@ -1,5 +1,5 @@
 import { Component, computed, effect, inject } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { BienService } from '../../services/bien.service';
 import { LocataireService } from '../../services/locataire.service';
@@ -11,7 +11,7 @@ import { NotificationService } from '../../services/notification.service';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [RouterLink, DatePipe],
+  imports: [RouterLink, DecimalPipe, DatePipe],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
@@ -43,6 +43,9 @@ export class DashboardComponent {
   isLoadingBaux = this.bailService.bauxResource.isLoading;
 
   avisRecents = this.paiementService.avisRecentsResource.value;
+
+  tauxOccupation = this.bienService.tauxOccupationResource.value;
+  isLoadingTaux = this.bienService.tauxOccupationResource.isLoading;
 
   bauxActifs = computed(
     () => this.baux().filter((bail) => !bail.dateFin || new Date(bail.dateFin) > new Date()).length,
