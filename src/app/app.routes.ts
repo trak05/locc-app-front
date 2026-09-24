@@ -87,6 +87,11 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./components/compte/mot-de-passe-form.component').then((m) => m.MotDePasseFormComponent),
       },
+      {
+        path: 'compte/profil',
+        loadComponent: () =>
+          import('./components/compte/profil-form.component').then((m) => m.ProfilFormComponent),
+      },
     ],
   },
   {

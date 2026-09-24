@@ -1,0 +1,75 @@
+<div class="profil-page">
+  <h1>Mon profil</h1>
+
+  @if (currentUser(); as user) {
+    <dl class="readonly">
+      <div>
+        <dt>Identifiant</dt>
+        <dd>{{ user.username }}</dd>
+      </div>
+      <div>
+        <dt>Rôle</dt>
+        <dd>{{ roleLabel() }}</dd>
+      </div>
+    </dl>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <label>
+      Nom
+      <input type="text" formControlName="nom" autocomplete="family-name" />
+    </label>
+    @if (form.controls.nom.touched && form.controls.nom.hasError('required')) {
+      <p class="error">Le nom est obligatoire.</p>
+    }
+
+    <label>
+      Prénom
+      <input type="text" formControlName="prenom" autocomplete="given-name" />
+    </label>
+    @if (form.controls.prenom.touched && form.controls.prenom.hasError('required')) {
+      <p class="error">Le prénom est obligatoire.</p>
+    }
+
+    <label>
+      Email
+      <input type="email" formControlName="email" autocomplete="email" />
+    </label>
+    @if (form.controls.email.touched && form.controls.email.hasError('required')) {
+      <p class="error">L'email est obligatoire.</p>
+    }
+    @if (form.controls.email.touched && form.controls.email.hasError('email')) {
+      <p class="error">Le format de l'email est incorrect.</p>
+    }
+
+    <label>
+      Téléphone
+      <input type="text" formControlName="telephone" autocomplete="tel" />
+    </label>
+
+    <label>
+      Civilité
+      <select formControlName="civilite">
+        <option [ngValue]="null">—</option>
+        @for (c of civilites; track c) {
+          <option [value]="c">{{ c === 'MME' ? 'Mme' : 'M.' }}</option>
+        }
+      </select>
+    </label>
+
+    @if (errorMessage()) {
+      <p class="error">{{ errorMessage() }}</p>
+    }
+    @if (successMessage()) {
+      <p class="success">{{ successMessage() }}</p>
+    }
+
+    <div class="actions">
+      <a routerLink="/compte/mot-de-passe" class="password-link">Changer mon mot de passe</a>
+      <a routerLink="/dashboard" class="cancel">Retour</a>
+      <button type="submit" class="submit" [disabled]="form.invalid || loading()">
+        {{ loading() ? 'Enregistrement...' : 'Enregistrer' }}
+      </button>
+    </div>
+  </form>
+</div>

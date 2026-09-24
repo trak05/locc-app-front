@@ -1,7 +1,14 @@
 import { HttpClient, httpResource } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Observable, switchMap, tap } from 'rxjs';
-import { ChangePasswordRequest, User, JwtPayload, LoginRequest, LoginResponse } from '../models/auth.model';
+import {
+  ChangePasswordRequest,
+  User,
+  JwtPayload,
+  LoginRequest,
+  LoginResponse,
+  ProfilRequest,
+} from '../models/auth.model';
 
 @Injectable({
   providedIn: 'root',
@@ -37,6 +44,14 @@ export class AuthService {
 
   changePassword(request: ChangePasswordRequest): Observable<void> {
     return this.http.put<void>(`${this.API_BASE}/connected-user/password`, request);
+  }
+
+  /* Le reload de currentUserResource met à jour la pastille et le dashboard
+     sans câblage supplémentaire. */
+  updateProfil(request: ProfilRequest): Observable<User> {
+    return this.http
+      .put<User>(`${this.API_BASE}/connected-user`, request)
+      .pipe(tap(() => this.currentUserResource.reload()));
   }
 
   getToken() {

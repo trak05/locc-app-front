@@ -50,3 +50,11 @@ export interface JwtPayload {
   iat: number;
   exp: number;
 }
+
+export interface ProfilRequest {
+  nom: string;
+  prenom: string;
+  email: string;
+  telephone?: string;
+  civilite?: Civilite;
+}
