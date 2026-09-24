@@ -70,6 +70,11 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./components/paiements/vue-ensemble.component').then((m) => m.VueEnsembleComponent),
       },
+      {
+        path: 'compte/mot-de-passe',
+        loadComponent: () =>
+          import('./components/compte/mot-de-passe-form.component').then((m) => m.MotDePasseFormComponent),
+      },
     ],
   },
   {
