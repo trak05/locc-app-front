@@ -1,7 +1,7 @@
 import { HttpClient, httpResource } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Observable, switchMap, tap } from 'rxjs';
-import { User, JwtPayload, LoginRequest, LoginResponse } from '../models/auth.model';
+import { ChangePasswordRequest, User, JwtPayload, LoginRequest, LoginResponse } from '../models/auth.model';
 
 @Injectable({
   providedIn: 'root',
@@ -33,6 +33,10 @@ export class AuthService {
       switchMap(() => this.http.get<User>(`${this.API_BASE}/connected-user`)),
       tap(() => this.currentUserResource.reload())
     );
+  }
+
+  changePassword(request: ChangePasswordRequest): Observable<void> {
+    return this.http.put<void>(`${this.API_BASE}/connected-user/password`, request);
   }
 
   getToken() {
