@@ -9,6 +9,15 @@
   👋
 </h1>
 <p class="subtitle">Vue d'ensemble de votre patrimoine locatif.</p>
+@if (derniereConnexion() !== undefined) {
+  <p class="last-login">
+    @if (derniereConnexion(); as date) {
+      Dernière connexion : le {{ date | date: 'dd/MM/yyyy' }} à {{ date | date: "HH'h'mm" }}
+    } @else {
+      Première connexion
+    }
+  </p>
+}
 
 @if (authService.isOwner() && avisRecents().length > 0) {
   <div class="banner">
