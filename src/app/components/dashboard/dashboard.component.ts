@@ -1,4 +1,5 @@
 import { Component, computed, effect, inject } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { BienService } from '../../services/bien.service';
 import { LocataireService } from '../../services/locataire.service';
@@ -10,7 +11,7 @@ import { NotificationService } from '../../services/notification.service';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, DatePipe],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
@@ -23,6 +24,7 @@ export class DashboardComponent {
   private notificationService = inject(NotificationService);
 
   currentUser = this.authService.currentUserResource.value;
+  derniereConnexion = this.authService.derniereConnexion;
 
   civiliteLabel = computed(() => {
     const civilite = this.currentUser()?.personalInfo.civilite;

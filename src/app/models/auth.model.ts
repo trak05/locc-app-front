@@ -34,6 +34,8 @@ export interface LoginRequest {
 
 export interface LoginResponse {
   token: string;
+  /** Connexion réussie précédente (ISO-8601 UTC), null si première connexion. */
+  derniereConnexion: string | null;
 }
 
 /** Payload décodé du JWT (voir AuthService.isTokenExpired). */
