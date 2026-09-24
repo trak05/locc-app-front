@@ -14,7 +14,6 @@
     @if (initials()) {
       <a routerLink="/compte/profil" class="user-badge" title="Mon profil" aria-label="Mon profil">{{ initials() }}</a>
     }
-    <a routerLink="/compte/mot-de-passe" routerLinkActive="active">Mot de passe</a>
     <button type="button" class="topnav__logout" (click)="logout()">Déconnexion</button>
   </span>
 </nav>
