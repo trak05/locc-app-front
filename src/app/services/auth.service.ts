@@ -1,5 +1,5 @@
 import { HttpClient, httpResource } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Observable, switchMap, tap } from 'rxjs';
 import { ChangePasswordRequest, User, JwtPayload, LoginRequest, LoginResponse } from '../models/auth.model';
 
@@ -10,6 +10,7 @@ export class AuthService {
   private http = inject(HttpClient);
 
   private readonly API_BASE = 'http://localhost:8081/api/auth';
+  private readonly DERNIERE_CONNEXION_KEY = 'derniereConnexion';
   OWNER = 'OWNER';
   TENANT = 'TENANT';
 
@@ -19,10 +20,15 @@ export class AuthService {
      vers /connected-user à chaque arrivée sur le dashboard. */
   currentUserResource = httpResource<User>(() => `${this.API_BASE}/connected-user`);
 
+  /** undefined = inconnu (session ouverte avant la feature) ; null = première connexion. */
+  derniereConnexion = signal<string | null | undefined>(this.readDerniereConnexion());
+
   login(request: LoginRequest): Observable<User> {
     return this.http.post<LoginResponse>(`${this.API_BASE}/login`, request).pipe(
       tap((response: LoginResponse) => {
         localStorage.setItem('token', response.token);
+        localStorage.setItem(this.DERNIERE_CONNEXION_KEY, JSON.stringify(response.derniereConnexion));
+        this.derniereConnexion.set(response.derniereConnexion);
       }),
       switchMap(() => this.http.get<User>(`${this.API_BASE}/connected-user`)),
       tap(() => this.currentUserResource.reload())
@@ -39,6 +45,8 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem(this.DERNIERE_CONNEXION_KEY);
+    this.derniereConnexion.set(undefined);
   }
 
   isAuthenticated(): boolean {
@@ -73,6 +81,11 @@ export class AuthService {
 
   isOwner(): boolean {
     return this.getUserRole() === this.OWNER;
+  }
+
+  private readDerniereConnexion(): string | null | undefined {
+    const raw = localStorage.getItem(this.DERNIERE_CONNEXION_KEY);
+    return raw === null ? undefined : (JSON.parse(raw) as string | null);
   }
 
   private isTokenExpired(token: string): boolean {

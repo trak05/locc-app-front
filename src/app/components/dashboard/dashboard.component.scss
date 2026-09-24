@@ -16,6 +16,12 @@ h2 {
   color: #67736e;
 }
 
+.last-login {
+  margin: -1rem 0 1.5rem;
+  font-size: 0.85rem;
+  color: #67736e;
+}
+
 .banner {
   display: flex;
   flex-wrap: wrap;
@@ -62,6 +68,17 @@ h2 {
     font-size: 2rem;
     font-weight: 700;
     color: #0f5c56;
+  }
+
+  &__hint {
+    font-size: 0.8rem;
+    color: #67736e;
+  }
+
+  &__empty {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #67736e;
   }
 }
 
