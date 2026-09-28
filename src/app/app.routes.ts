@@ -19,6 +19,11 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'mentions-legales',
+    loadComponent: () =>
+      import('./components/legal/mentions-legales.component').then((m) => m.MentionsLegalesComponent),
+  },
+  {
     path: '',
     canActivate: [authGuard],
     loadComponent: () => import('./components/layout/layout.component').then((m) => m.LayoutComponent),
