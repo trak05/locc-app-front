@@ -1,0 +1,66 @@
+.legal-page {
+  min-height: 100vh;
+  background: #fff;
+  color: #12181b;
+  padding: 2.5rem 1.25rem;
+  box-sizing: border-box;
+}
+
+.legal-page__inner {
+  max-width: 720px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.brand {
+  width: 48px;
+  height: 48px;
+}
+
+h1 {
+  margin: 1rem 0 1.5rem;
+  font-size: 1.75rem;
+}
+
+h2 {
+  margin: 2rem 0 0.5rem;
+  font-size: 1.2rem;
+}
+
+h3 {
+  margin: 1.25rem 0 0.25rem;
+  font-size: 1rem;
+}
+
+p,
+ul {
+  margin: 0 0 0.75rem;
+}
+
+ul {
+  padding-left: 1.25rem;
+}
+
+a {
+  color: #0f5c56;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.provisoire {
+  padding: 0.75rem 1rem;
+  background: #fdf6e3;
+  border: 1px solid #e8c468;
+  border-radius: 8px;
+}
+
+footer {
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #dde3dd;
+}
+
+.maj {
+  color: #67736e;
+  font-size: 0.9rem;
+}

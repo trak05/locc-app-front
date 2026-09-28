@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { LoginDraftService } from '../../services/login-draft.service';
 
 @Component({
   selector: 'app-auth',
@@ -15,6 +16,7 @@ export class AuthComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private loginDraft = inject(LoginDraftService);
 
   errorMessage = signal<string | null>(null);
   successMessage = signal<string | null>(
@@ -29,10 +31,17 @@ export class AuthComponent {
     this.showPassword.update((value) => !value);
   }
 
+  // Saisie conservée lors d'un aller-retour vers les mentions légales (lue une seule fois).
+  private draft = this.loginDraft.consume();
+
   form = this.fb.nonNullable.group({
-    username: ['', Validators.required],
-    password: ['', Validators.required],
+    username: [this.draft?.username ?? '', Validators.required],
+    password: [this.draft?.password ?? '', Validators.required],
   });
+
+  ouvrirMentionsLegales(): void {
+    this.loginDraft.save(this.form.getRawValue());
+  }
 
   login(): void {
     if (this.form.invalid) {
