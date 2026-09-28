@@ -21,6 +21,16 @@
   }
 }
 
+.paiements-link {
+  display: inline-flex;
+  align-items: center;
+  color: #0f5c56;
+
+  &:hover {
+    color: #0a3f3a;
+  }
+}
+
 .edit-link {
   display: inline-flex;
   align-items: center;
