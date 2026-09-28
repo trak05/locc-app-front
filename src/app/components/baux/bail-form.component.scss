@@ -39,6 +39,16 @@ select {
   }
 }
 
+.readonly-field {
+  margin: 0;
+  padding: 0.65rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #dde3dd;
+  background: #f5f7f5;
+  font-size: 0.9rem;
+  color: #12181b;
+}
+
 .error {
   color: #d64545;
   font-size: 0.85rem;
