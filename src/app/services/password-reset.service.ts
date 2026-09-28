@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PasswordResetConfirmRequest, PasswordResetRequest } from '../models/password-reset.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,7 @@ import { PasswordResetConfirmRequest, PasswordResetRequest } from '../models/pas
 export class PasswordResetService {
   private http = inject(HttpClient);
 
-  private readonly API_BASE = 'http://localhost:8081/api/auth/password-reset';
+  private readonly API_BASE = `${environment.apiBaseUrl}/auth/password-reset`;
 
   demander(request: PasswordResetRequest): Observable<void> {
     return this.http.post<void>(`${this.API_BASE}/request`, request);

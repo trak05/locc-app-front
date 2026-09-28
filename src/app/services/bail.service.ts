@@ -5,12 +5,13 @@ import { tap } from 'rxjs/operators';
 import { Bail, BailRequest, BailUpdateRequest } from '../models/bail.model';
 import { BienService } from './bien.service';
 import { PaiementService } from './paiement.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BailService {
-  private readonly API_BASE = 'http://localhost:8081/api';
+  private readonly API_BASE = environment.apiBaseUrl;
   private readonly http = inject(HttpClient);
   private readonly bienService = inject(BienService);
   private readonly paiementService = inject(PaiementService);

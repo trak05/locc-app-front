@@ -9,6 +9,7 @@ import {
   LoginResponse,
   ProfilRequest,
 } from '../models/auth.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +17,7 @@ import {
 export class AuthService {
   private http = inject(HttpClient);
 
-  private readonly API_BASE = 'http://localhost:8081/api/auth';
+  private readonly API_BASE = `${environment.apiBaseUrl}/auth`;
   private readonly DERNIERE_CONNEXION_KEY = 'derniereConnexion';
   OWNER = 'OWNER';
   TENANT = 'TENANT';
