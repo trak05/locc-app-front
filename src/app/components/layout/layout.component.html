@@ -3,9 +3,6 @@
   <a routerLink="/biens" routerLinkActive="active">Biens</a>
   <a routerLink="/locataires" routerLinkActive="active">Locataires</a>
   <a routerLink="/baux" routerLinkActive="active">Baux</a>
-  @if (authService.isOwner()) {
-    <a routerLink="/paiements/vue-ensemble" routerLinkActive="active">Paiements</a>
-  }
   <span class="topnav__right">
     @if (authService.isOwner()) {
       <app-notification-bell />
