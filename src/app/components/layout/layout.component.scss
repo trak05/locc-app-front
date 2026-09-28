@@ -29,6 +29,13 @@
     opacity: 1;
   }
 
+  a.topnav__brand {
+    opacity: 1;
+    color: #12181b;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
   &__logout {
     border: none;
     background: transparent;
