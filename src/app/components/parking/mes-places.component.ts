@@ -25,6 +25,11 @@ export class MesPlacesComponent {
 
   errorMessage = signal<string | null>(null);
 
+  constructor() {
+    // Déconnexion de A puis connexion de B sans rechargement : ne jamais afficher la liste précédente.
+    this.placeParkingService.placesResource.reload();
+  }
+
   confirmRetrait(event: Event, id: number): void {
     this.confirmationService.confirm({
       target: event.currentTarget as EventTarget,
