@@ -142,10 +142,19 @@ export const routes: Routes = [
       {
         path: 'parking/voyageur',
         canActivate: [parkingGuard('VOYAGEUR')],
-        loadComponent: () =>
-          import('./components/parking/parking-voyageur-accueil.component').then(
-            (m) => m.ParkingVoyageurAccueilComponent,
-          ),
+        children: [
+          // Critères dans les query params : ?ville&arrivee&depart (LOC-24).
+          {
+            path: '',
+            loadComponent: () =>
+              import('./components/parking/recherche-places.component').then((m) => m.RecherchePlacesComponent),
+          },
+          {
+            path: 'places/:id',
+            loadComponent: () =>
+              import('./components/parking/place-detail.component').then((m) => m.PlaceDetailComponent),
+          },
+        ],
       },
     ],
   },

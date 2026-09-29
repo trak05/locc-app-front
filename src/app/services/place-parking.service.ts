@@ -1,8 +1,13 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, httpResource } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { PlaceParking, PlaceParkingRequest } from '../models/place-parking.model';
+import {
+  CriteresRecherche,
+  PlaceParking,
+  PlaceParkingPublique,
+  PlaceParkingRequest,
+} from '../models/place-parking.model';
 import { AuthService } from './auth.service';
 import { environment } from '../../environments/environment';
 
@@ -23,6 +28,35 @@ export class PlaceParkingService {
         : undefined,
     { defaultValue: [] }
   );
+
+  /* Recherche du voyageur (LOC-24) : resources paramétrées par un signal, idle (factory
+     `undefined`) tant qu'aucun critère valide n'est posé par les composants. */
+  private criteres = signal<CriteresRecherche | null>(null);
+  setCriteres(criteres: CriteresRecherche | null): void {
+    this.criteres.set(criteres);
+  }
+
+  resultatsResource = httpResource<PlaceParkingPublique[]>(
+    () => {
+      const c = this.criteres();
+      return c && this.authService.currentUserResource.value()?.parkingRole === 'VOYAGEUR'
+        ? { url: `${this.API_BASE}/parking/places`, params: { ville: c.ville, arrivee: c.arrivee, depart: c.depart } }
+        : undefined;
+    },
+    { defaultValue: [] }
+  );
+
+  private placeConsultee = signal<{ id: number; arrivee: string; depart: string } | null>(null);
+  setPlaceConsultee(place: { id: number; arrivee: string; depart: string } | null): void {
+    this.placeConsultee.set(place);
+  }
+
+  placeConsulteeResource = httpResource<PlaceParkingPublique>(() => {
+    const p = this.placeConsultee();
+    return p && this.authService.currentUserResource.value()?.parkingRole === 'VOYAGEUR'
+      ? { url: `${this.API_BASE}/parking/places/${p.id}`, params: { arrivee: p.arrivee, depart: p.depart } }
+      : undefined;
+  });
 
   create(place: PlaceParkingRequest): Observable<PlaceParking> {
     return this.http
