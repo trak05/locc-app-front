@@ -23,6 +23,9 @@ export class LayoutComponent {
 
   currentUser = this.authService.currentUserResource.value;
 
+  // Basé sur currentUserResource (et non le JWT) : l'entrée apparaît dès le reload qui suit l'activation.
+  parkingRole = computed(() => this.currentUser()?.parkingRole ?? null);
+
   initials = computed(() => {
     const info = this.currentUser()?.personalInfo;
     if (!info) return '';

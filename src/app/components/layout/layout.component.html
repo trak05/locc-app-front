@@ -1,8 +1,13 @@
 <nav class="topnav">
-  <a routerLink="/dashboard" class="topnav__brand" title="Retour à l'accueil" aria-label="Retour à l'accueil">🏠 Loc App</a>
-  <a routerLink="/biens" routerLinkActive="active">Biens</a>
-  <a routerLink="/locataires" routerLinkActive="active">Locataires</a>
-  <a routerLink="/baux" routerLinkActive="active">Baux</a>
+  <a [routerLink]="authService.homeUrl()" class="topnav__brand" title="Retour à l'accueil" aria-label="Retour à l'accueil">🏠 Loc App</a>
+  @if (authService.hasGestionLocative()) {
+    <a routerLink="/biens" routerLinkActive="active">Biens</a>
+    <a routerLink="/locataires" routerLinkActive="active">Locataires</a>
+    <a routerLink="/baux" routerLinkActive="active">Baux</a>
+  }
+  @if (parkingRole(); as r) {
+    <a [routerLink]="authService.parkingHomeUrl(r)" routerLinkActive="active">Parking</a>
+  }
   <span class="topnav__right">
     @if (authService.isOwner()) {
       <app-notification-bell />
