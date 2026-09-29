@@ -7,10 +7,18 @@
         <dt>Identifiant</dt>
         <dd>{{ user.username }}</dd>
       </div>
-      <div>
-        <dt>Rôle</dt>
-        <dd>{{ roleLabel() }}</dd>
-      </div>
+      @if (roleLabel(); as label) {
+        <div>
+          <dt>Rôle</dt>
+          <dd>{{ label }}</dd>
+        </div>
+      }
+      @if (parkingRoleLabel(); as label) {
+        <div>
+          <dt>Rôle Parking</dt>
+          <dd>{{ label }}</dd>
+        </div>
+      }
     </dl>
   }
 
@@ -46,6 +54,12 @@
       Téléphone
       <input type="text" formControlName="telephone" autocomplete="tel" />
     </label>
+    @if (form.controls.telephone.touched && form.controls.telephone.hasError('required')) {
+      <p class="error">Le téléphone est obligatoire.</p>
+    }
+    @if (form.controls.telephone.touched && form.controls.telephone.hasError('pattern')) {
+      <p class="error">Le numéro de téléphone est invalide.</p>
+    }
 
     <label>
       Civilité
@@ -66,10 +80,16 @@
 
     <div class="actions">
       <a routerLink="/compte/mot-de-passe" class="password-link">Changer mon mot de passe</a>
-      <a routerLink="/dashboard" class="cancel">Retour</a>
+      <a [routerLink]="authService.homeUrl()" class="cancel">Retour</a>
       <button type="submit" class="submit" [disabled]="form.invalid || loading()">
         {{ loading() ? 'Enregistrement...' : 'Enregistrer' }}
       </button>
     </div>
   </form>
+
+  <!-- Rendu tant que le compte a un rôle de gestion : le composant masque lui-même le bouton
+       une fois parkingRole renseigné, mais garde son message de succès après l'activation. -->
+  @if (currentUser()?.role) {
+    <app-activation-parking />
+  }
 </div>

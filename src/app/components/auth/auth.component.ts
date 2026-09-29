@@ -55,7 +55,7 @@ export class AuthComponent {
     this.authService.login(this.form.getRawValue()).subscribe({
       next: () => {
         this.loading.set(false);
-        this.router.navigate(['/dashboard']);
+        this.router.navigate([this.authService.homeUrl()]);
       },
       error: () => {
         this.loading.set(false);

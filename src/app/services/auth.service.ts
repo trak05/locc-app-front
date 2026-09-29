@@ -2,12 +2,16 @@ import { HttpClient, httpResource } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Observable, switchMap, tap } from 'rxjs';
 import {
+  ActivationParkingRequest,
   ChangePasswordRequest,
+  InscriptionParkingRequest,
   User,
   JwtPayload,
   LoginRequest,
   LoginResponse,
+  ParkingRole,
   ProfilRequest,
+  TokenResponse,
 } from '../models/auth.model';
 import { environment } from '../../environments/environment';
 
@@ -32,14 +36,26 @@ export class AuthService {
   derniereConnexion = signal<string | null | undefined>(this.readDerniereConnexion());
 
   login(request: LoginRequest): Observable<User> {
-    return this.http.post<LoginResponse>(`${this.API_BASE}/login`, request).pipe(
-      tap((response: LoginResponse) => {
+    return this.http
+      .post<LoginResponse>(`${this.API_BASE}/login`, request)
+      .pipe(switchMap((response) => this.openSession(response)));
+  }
+
+  /** Inscription publique au module Parking : le compte est connecté aussitôt (même enchaînement que login). */
+  inscrireParking(request: InscriptionParkingRequest): Observable<User> {
+    return this.http
+      .post<LoginResponse>(`${this.API_BASE}/parking/inscription`, request)
+      .pipe(switchMap((response) => this.openSession(response)));
+  }
+
+  /* Le back renvoie un nouveau jeton portant la claim parkingRole (les gardes lisent le JWT) ;
+     le reload fait apparaître l'entrée « Parking » de la barre de navigation sans rechargement. */
+  activerParking(request: ActivationParkingRequest): Observable<TokenResponse> {
+    return this.http.post<TokenResponse>(`${this.API_BASE}/connected-user/parking`, request).pipe(
+      tap((response) => {
         localStorage.setItem('token', response.token);
-        localStorage.setItem(this.DERNIERE_CONNEXION_KEY, JSON.stringify(response.derniereConnexion));
-        this.derniereConnexion.set(response.derniereConnexion);
+        this.currentUserResource.reload();
       }),
-      switchMap(() => this.http.get<User>(`${this.API_BASE}/connected-user`)),
-      tap(() => this.currentUserResource.reload())
     );
   }
 
@@ -81,6 +97,46 @@ export class AuthService {
   }
 
   getUserRole(): string | null {
+    return this.decodePayload()?.role ?? null;
+  }
+
+  getParkingRole(): ParkingRole | null {
+    return this.decodePayload()?.parkingRole ?? null;
+  }
+
+  isOwner(): boolean {
+    return this.getUserRole() === this.OWNER;
+  }
+
+  /** Accès à la gestion locative : réservé aux propriétaires et locataires (pas aux comptes Parking seuls). */
+  hasGestionLocative(): boolean {
+    const role = this.getUserRole();
+    return role === this.OWNER || role === this.TENANT;
+  }
+
+  parkingHomeUrl(role: ParkingRole): string {
+    return role === 'LOUEUR' ? '/parking/loueur' : '/parking/voyageur';
+  }
+
+  /** Accueil selon le JWT : gestion locative d'abord, sinon l'espace Parking du rôle. */
+  homeUrl(): string {
+    if (this.hasGestionLocative()) {
+      return '/dashboard';
+    }
+    const parkingRole = this.getParkingRole();
+    return parkingRole ? this.parkingHomeUrl(parkingRole) : '/login';
+  }
+
+  private openSession(response: LoginResponse): Observable<User> {
+    localStorage.setItem('token', response.token);
+    localStorage.setItem(this.DERNIERE_CONNEXION_KEY, JSON.stringify(response.derniereConnexion));
+    this.derniereConnexion.set(response.derniereConnexion);
+    return this.http
+      .get<User>(`${this.API_BASE}/connected-user`)
+      .pipe(tap(() => this.currentUserResource.reload()));
+  }
+
+  private decodePayload(): JwtPayload | null {
     const token = this.getToken();
 
     if (!token) {
@@ -88,15 +144,10 @@ export class AuthService {
     }
 
     try {
-      const payload: JwtPayload = JSON.parse(atob(token.split('.')[1]));
-      return payload.role;
+      return JSON.parse(atob(token.split('.')[1])) as JwtPayload;
     } catch {
       return null;
     }
-  }
-
-  isOwner(): boolean {
-    return this.getUserRole() === this.OWNER;
   }
 
   private readDerniereConnexion(): string | null | undefined {

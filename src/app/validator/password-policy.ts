@@ -13,6 +13,13 @@ export const PASSWORD_MESSAGES = {
   rule: `Le nouveau mot de passe doit contenir au moins ${PASSWORD_MIN_LENGTH} caractères et être différent du mot de passe actuel.`,
 } as const;
 
+/** Messages de l'inscription Parking (LOC-22) : pas de mot de passe « actuel », d'où une formulation distincte. */
+export const INSCRIPTION_PASSWORD_MESSAGES = {
+  minLength: `Le mot de passe doit contenir au moins ${PASSWORD_MIN_LENGTH} caractères.`,
+  maxLength: `Le mot de passe ne peut pas dépasser ${PASSWORD_MAX_LENGTH} caractères.`,
+  mismatch: 'Les deux mots de passe ne correspondent pas.',
+} as const;
+
 export const newPasswordValidators: ValidatorFn[] = [
   Validators.required,
   Validators.minLength(PASSWORD_MIN_LENGTH),

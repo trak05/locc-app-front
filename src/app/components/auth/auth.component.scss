@@ -127,6 +127,8 @@ input {
 
 .links {
   display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
   justify-content: space-between;
   margin-top: 1.25rem;
   font-size: 0.85rem;
