@@ -10,6 +10,24 @@ h1 {
   color: #12181b;
 }
 
+.page-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.lien-header {
+  color: #0f5c56;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 .sous-titre {
   margin: 0 0 1.5rem;
   color: #67736e;

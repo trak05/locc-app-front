@@ -1,5 +1,8 @@
 <section class="recherche-page">
-  <h1>Espace Parking — Voyageur</h1>
+  <div class="page-header">
+    <h1>Espace Parking — Voyageur</h1>
+    <a routerLink="/parking/voyageur/reservations" class="lien-header">Mes réservations</a>
+  </div>
   <p class="sous-titre">Trouvez une place de parking pour votre séjour.</p>
 
   <form [formGroup]="form" (ngSubmit)="rechercher()">
