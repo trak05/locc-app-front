@@ -1,0 +1,40 @@
+<section class="detail-page">
+  <a routerLink="/parking/voyageur" queryParamsHandling="preserve" class="retour">Retour aux résultats</a>
+
+  @if (datesAbsentes) {
+    <p class="error">{{ messageDatesInvalides }}</p>
+  } @else if (chargement()) {
+    <p>Chargement...</p>
+  } @else if (erreur()) {
+    <p class="error">{{ erreur() }}</p>
+  } @else {
+    @let place = placeResource.value();
+    @if (place) {
+      <h1>{{ place.quartier }}, {{ villeLabels[place.ville] }}</h1>
+
+      <dl>
+        <dt>Ville</dt>
+        <dd>{{ villeLabels[place.ville] }}</dd>
+        <dt>Quartier</dt>
+        <dd>{{ place.quartier }}</dd>
+        <dt>Type</dt>
+        <dd>{{ typeLabels[place.type] }}</dd>
+        <dt>Prix par jour</dt>
+        <dd>{{ place.prixParJour | prixDt }}</dd>
+        <dt>Prix total</dt>
+        <dd>
+          <strong>{{ place.prixTotal | prixDt }}</strong>
+          ({{ place.nbJours }} {{ place.nbJours > 1 ? 'jours' : 'jour' }}, du {{ arrivee | date: 'dd/MM/yyyy' }}
+          au {{ depart | date: 'dd/MM/yyyy' }})
+        </dd>
+        <dt>Description</dt>
+        <dd>{{ place.description ?? 'Aucune description.' }}</dd>
+      </dl>
+
+      <p class="mention">
+        L'adresse exacte et le téléphone du loueur vous seront communiqués après acceptation de votre demande.
+      </p>
+      <div class="bientot">Réservation bientôt disponible</div>
+    }
+  }
+</section>

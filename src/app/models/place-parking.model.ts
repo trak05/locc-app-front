@@ -19,6 +19,27 @@ export interface PlaceParking {
 }
 export type PlaceParkingRequest = Omit<PlaceParking, 'id' | 'publieeLe'>;
 
+/** Vue voyageur (LOC-24) : jamais d'adresse ni de données du loueur. */
+export interface PlaceParkingPublique {
+  id: number;
+  ville: VilleTunisie;
+  quartier: string;
+  type: TypePlace;
+  /** Dinars, jusqu'à 3 décimales. */
+  prixParJour: number;
+  description: string | null;
+  /** Jours inclus (arrivée et départ comptés). */
+  nbJours: number;
+  /** prixParJour × nbJours, calculé par le back. */
+  prixTotal: number;
+}
+/** Dates ISO « YYYY-MM-DD » (LocalDate), identiques aux query params. */
+export interface CriteresRecherche {
+  ville: VilleTunisie;
+  arrivee: string;
+  depart: string;
+}
+
 export const VILLE_LABELS: Record<VilleTunisie, string> = {
   TUNIS: 'Tunis',
   ARIANA: 'Ariana',
