@@ -30,7 +30,8 @@ export class PlaceParkingService {
   );
 
   /* Recherche du voyageur (LOC-24) : resources paramétrées par un signal, idle (factory
-     `undefined`) tant qu'aucun critère valide n'est posé par les composants. */
+     `undefined`) tant qu'aucun critère valide n'est posé par les composants. Le rôle est lu
+     dans le JWT (LOC-25) : disponible dès l'ouverture de la session, sans attendre currentUserResource. */
   private criteres = signal<CriteresRecherche | null>(null);
   setCriteres(criteres: CriteresRecherche | null): void {
     this.criteres.set(criteres);
@@ -39,7 +40,7 @@ export class PlaceParkingService {
   resultatsResource = httpResource<PlaceParkingPublique[]>(
     () => {
       const c = this.criteres();
-      return c && this.authService.currentUserResource.value()?.parkingRole === 'VOYAGEUR'
+      return c && this.authService.getParkingRole() === 'VOYAGEUR'
         ? { url: `${this.API_BASE}/parking/places`, params: { ville: c.ville, arrivee: c.arrivee, depart: c.depart } }
         : undefined;
     },
@@ -53,7 +54,7 @@ export class PlaceParkingService {
 
   placeConsulteeResource = httpResource<PlaceParkingPublique>(() => {
     const p = this.placeConsultee();
-    return p && this.authService.currentUserResource.value()?.parkingRole === 'VOYAGEUR'
+    return p && this.authService.getParkingRole() === 'VOYAGEUR'
       ? { url: `${this.API_BASE}/parking/places/${p.id}`, params: { arrivee: p.arrivee, depart: p.depart } }
       : undefined;
   });

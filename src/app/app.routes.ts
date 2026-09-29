@@ -154,6 +154,11 @@ export const routes: Routes = [
             loadComponent: () =>
               import('./components/parking/place-detail.component').then((m) => m.PlaceDetailComponent),
           },
+          {
+            path: 'reservations',
+            loadComponent: () =>
+              import('./components/parking/mes-reservations.component').then((m) => m.MesReservationsComponent),
+          },
         ],
       },
     ],

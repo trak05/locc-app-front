@@ -52,11 +52,103 @@ dd {
   font-size: 0.85rem;
 }
 
-.bientot {
-  padding: 1rem 1.25rem;
-  border: 1px dashed #dde3dd;
+.demander,
+.confirmer {
+  padding: 0.75rem 1.5rem;
   border-radius: 8px;
-  color: #0f5c56;
+  border: none;
+  background: #0f5c56;
+  color: white;
+  font: inherit;
   font-weight: 600;
-  text-align: center;
+  cursor: pointer;
+
+  &:hover {
+    background: #0d4d48;
+  }
+}
+
+.demander {
+  width: 100%;
+}
+
+.abandonner {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #dde3dd;
+  background: white;
+  color: #12181b;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    border-color: #0f5c56;
+  }
+}
+
+.recap {
+  padding: 1.25rem;
+  border: 1px solid #dde3dd;
+  border-radius: 8px;
+
+  h2 {
+    margin: 0 0 1rem;
+    font-size: 1.1rem;
+    color: #12181b;
+  }
+}
+
+.mentions {
+  margin: 0 0 1.25rem;
+  padding-left: 1.1rem;
+  color: #67736e;
+  font-size: 0.9rem;
+
+  li + li {
+    margin-top: 0.35rem;
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #12181b;
+}
+
+input,
+textarea {
+  padding: 0.65rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #dde3dd;
+  font: inherit;
+
+  &:focus {
+    outline: none;
+    border-color: #0f5c56;
+    box-shadow: 0 0 0 3px rgba(15, 92, 86, 0.12);
+  }
+}
+
+textarea {
+  resize: vertical;
+}
+
+form .error {
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
 }
