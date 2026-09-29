@@ -121,8 +121,23 @@ export const routes: Routes = [
       {
         path: 'parking/loueur',
         canActivate: [parkingGuard('LOUEUR')],
-        loadComponent: () =>
-          import('./components/parking/parking-loueur-accueil.component').then((m) => m.ParkingLoueurAccueilComponent),
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./components/parking/mes-places.component').then((m) => m.MesPlacesComponent),
+          },
+          {
+            path: 'places/new',
+            loadComponent: () =>
+              import('./components/parking/place-form.component').then((m) => m.PlaceFormComponent),
+          },
+          {
+            path: 'places/:id/edit',
+            loadComponent: () =>
+              import('./components/parking/place-form.component').then((m) => m.PlaceFormComponent),
+          },
+        ],
       },
       {
         path: 'parking/voyageur',
