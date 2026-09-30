@@ -5,6 +5,23 @@
   gap: 1rem;
 }
 
+.header-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.demandes-link {
+  color: #0f5c56;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 .add-button {
   display: inline-flex;
   align-items: center;

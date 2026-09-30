@@ -43,6 +43,20 @@
           @if (r.message) {
             <p class="lecture">Message : {{ r.message }}</p>
           }
+          @if (r.adresse || r.telephoneLoueur) {
+            <div class="coordonnees">
+              <strong>Coordonnées du loueur</strong>
+              @if (r.adresse) {
+                <p>Adresse : {{ r.adresse }}</p>
+              }
+              @if (r.telephoneLoueur) {
+                <p>Téléphone du loueur : {{ r.telephoneLoueur }}</p>
+              }
+            </div>
+          }
+          @if (r.motif) {
+            <p class="lecture">Motif : {{ r.motif }}</p>
+          }
           <p class="discret">Demandée le {{ r.demandeeLe | date: 'dd/MM/yyyy' }}</p>
           @if (r.annulable) {
             <div class="actions">
