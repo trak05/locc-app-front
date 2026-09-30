@@ -1,4 +1,4 @@
-.reservations-page {
+.demandes-page {
   max-width: 640px;
   margin: 0 auto;
   padding: 2rem 1rem;
@@ -17,6 +17,12 @@ h1 {
   color: #12181b;
 }
 
+h2 {
+  margin: 1.25rem 0 0.75rem;
+  font-size: 1.1rem;
+  color: #12181b;
+}
+
 .lien-header {
   color: #0f5c56;
   font-size: 0.9rem;
@@ -28,26 +34,12 @@ h1 {
   }
 }
 
-.bandeau {
-  margin: 0 0 1rem;
-  padding: 0.75rem 1rem;
-  border: 1px solid #0f5c56;
-  border-radius: 8px;
-  background: rgba(15, 92, 86, 0.08);
-  color: #0f5c56;
-  font-weight: 600;
-}
-
 .error {
   color: #d64545;
   font-size: 0.85rem;
 }
 
 .vide {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
   padding: 1.5rem 1.25rem;
   border: 1px dashed #dde3dd;
   border-radius: 8px;
@@ -56,19 +48,6 @@ h1 {
   p {
     margin: 0;
     color: #67736e;
-  }
-}
-
-.bouton {
-  background: #0f5c56;
-  color: white;
-  font-weight: 600;
-  text-decoration: none;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-
-  &:hover {
-    background: #0d4d48;
   }
 }
 
@@ -127,38 +106,77 @@ li {
   white-space: pre-line;
 }
 
-.coordonnees {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  padding: 0.6rem 0.9rem;
-  border: 1px solid #0f5c56;
-  border-radius: 8px;
-  background: rgba(15, 92, 86, 0.08);
-}
-
 .discret {
   color: #67736e;
   font-size: 0.85rem;
 }
 
+.panneau {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #dde3dd;
+  border-radius: 8px;
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.9rem;
+  }
+
+  textarea {
+    padding: 0.5rem;
+    border: 1px solid #dde3dd;
+    border-radius: 8px;
+    font: inherit;
+    resize: vertical;
+  }
+}
+
 .actions {
   display: flex;
   justify-content: flex-end;
+  gap: 0.5rem;
 }
 
-.annuler {
+button {
   padding: 0.4rem 0.9rem;
   border-radius: 8px;
-  border: 1px solid #d64545;
-  background: white;
-  color: #d64545;
   font: inherit;
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
 
-  &:hover {
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.principal {
+  border: 1px solid #0f5c56;
+  background: #0f5c56;
+  color: white;
+
+  &:hover:not(:disabled) {
+    background: #0d4d48;
+  }
+}
+
+.secondaire {
+  border: 1px solid #dde3dd;
+  background: white;
+  color: #67736e;
+}
+
+.danger {
+  border: 1px solid #d64545;
+  background: white;
+  color: #d64545;
+
+  &:hover:not(:disabled) {
     background: rgba(214, 69, 69, 0.06);
   }
 }

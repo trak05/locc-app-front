@@ -128,6 +128,11 @@ export const routes: Routes = [
               import('./components/parking/mes-places.component').then((m) => m.MesPlacesComponent),
           },
           {
+            path: 'demandes',
+            loadComponent: () =>
+              import('./components/parking/demandes-recues.component').then((m) => m.DemandesRecuesComponent),
+          },
+          {
             path: 'places/new',
             loadComponent: () =>
               import('./components/parking/place-form.component').then((m) => m.PlaceFormComponent),

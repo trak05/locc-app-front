@@ -34,6 +34,47 @@ export interface ReservationParking {
   annuleeLe: string | null;
   /** Calculé par le back (heure de Tunisie) : afficher « Annuler » si vrai. */
   annulable: boolean;
+  /** Seulement si ACCEPTEE (LOC-26). */
+  adresse: string | null;
+  /** Seulement si ACCEPTEE (LOC-26). */
+  telephoneLoueur: string | null;
+  /** Refus ou annulation par le loueur. */
+  motif: string | null;
+  /** ISO-8601 ; null tant que non traitée. */
+  traiteeLe: string | null;
+}
+
+/** Vue loueur (LOC-26) : téléphone du voyageur seulement si ACCEPTEE, jamais d'email. */
+export interface ReservationRecueParking {
+  id: number;
+  placeId: number;
+  ville: VilleTunisie;
+  quartier: string;
+  adresse: string;
+  type: TypePlace;
+  arrivee: string;
+  depart: string;
+  nbJours: number;
+  prixParJour: number;
+  prixTotal: number;
+  voyageurNom: string;
+  telephoneVoyageur: string | null;
+  vehicule: string | null;
+  message: string | null;
+  etat: EtatReservation;
+  etatPaiement: EtatPaiement;
+  demandeeLe: string;
+  traiteeLe: string | null;
+  annuleeLe: string | null;
+  motif: string | null;
+  /** Calculé par le back : afficher Accepter / Refuser. */
+  acceptable: boolean;
+  /** Calculé par le back : afficher Annuler la réservation. */
+  annulable: boolean;
+}
+
+export interface MotifRequest {
+  motif: string | null;
 }
 
 export interface ReservationParkingRequest {
@@ -52,5 +93,14 @@ export const ETAT_RESERVATION_LABELS: Record<EtatReservation, string> = {
   ANNULEE_VOYAGEUR: 'Annulée par vous',
   ANNULEE_PLACE_RETIREE: 'Annulée — place retirée',
   ANNULEE_LOUEUR: 'Annulée par le loueur',
+};
+export const ETAT_RESERVATION_LOUEUR_LABELS: Record<EtatReservation, string> = {
+  EN_ATTENTE: 'En attente',
+  ACCEPTEE: 'Acceptée',
+  REFUSEE: 'Refusée',
+  EXPIREE: 'Expirée',
+  ANNULEE_VOYAGEUR: 'Annulée par le voyageur',
+  ANNULEE_PLACE_RETIREE: 'Annulée — place retirée',
+  ANNULEE_LOUEUR: 'Annulée par vous',
 };
 export const ETAT_PAIEMENT_LABELS: Record<EtatPaiement, string> = { NON_PAYE: 'Non payé', PAYE: 'Payé' };
