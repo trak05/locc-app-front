@@ -1,21 +1,32 @@
 <nav class="topnav">
-  <span class="topnav__brand">🏠 Loc App</span>
-  <a routerLink="/dashboard" routerLinkActive="active">Accueil</a>
-  <a routerLink="/biens" routerLinkActive="active">Biens</a>
-  <a routerLink="/locataires" routerLinkActive="active">Locataires</a>
-  <a routerLink="/baux" routerLinkActive="active">Baux</a>
-  @if (authService.isOwner()) {
-    <a routerLink="/paiements/vue-ensemble" routerLinkActive="active">Paiements</a>
+  <a [routerLink]="authService.homeUrl()" class="topnav__brand" title="Retour à l'accueil" aria-label="Retour à l'accueil">🏠 Loc App</a>
+  @if (authService.hasGestionLocative()) {
+    <a routerLink="/biens" routerLinkActive="active">Biens</a>
+    <a routerLink="/locataires" routerLinkActive="active">Locataires</a>
+    <a routerLink="/baux" routerLinkActive="active">Baux</a>
+  }
+  @if (parkingRole(); as r) {
+    <a [routerLink]="authService.parkingHomeUrl(r)" routerLinkActive="active">Parking</a>
   }
   <span class="topnav__right">
     @if (authService.isOwner()) {
       <app-notification-bell />
     }
-    @if (initials()) {
-      <span class="user-badge">{{ initials() }}</span>
+    @if (roleLabel(); as label) {
+      <span class="topnav__role"><span class="visually-hidden">Rôle : </span>{{ label }}</span>
     }
-    <button type="button" class="topnav__logout" (click)="logout()">Déconnexion</button>
+    @if (initials()) {
+      <a routerLink="/compte/profil" class="user-badge" title="Mon profil" aria-label="Mon profil">{{ initials() }}</a>
+    }
+    <button type="button" class="topnav__logout" (click)="logout()" title="Déconnexion" aria-label="Déconnexion">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+        <polyline points="16 17 21 12 16 7" />
+        <line x1="21" y1="12" x2="9" y2="12" />
+      </svg>
+    </button>
   </span>
+  <span class="topnav__center">Adservio</span>
 </nav>
 
 <main class="content">

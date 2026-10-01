@@ -1,0 +1,164 @@
+.reservations-page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.page-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+h1 {
+  margin: 0 0 1.5rem;
+  font-size: 1.4rem;
+  color: #12181b;
+}
+
+.lien-header {
+  color: #0f5c56;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.bandeau {
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #0f5c56;
+  border-radius: 8px;
+  background: rgba(15, 92, 86, 0.08);
+  color: #0f5c56;
+  font-weight: 600;
+}
+
+.error {
+  color: #d64545;
+  font-size: 0.85rem;
+}
+
+.vide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem 1.25rem;
+  border: 1px dashed #dde3dd;
+  border-radius: 8px;
+  text-align: center;
+
+  p {
+    margin: 0;
+    color: #67736e;
+  }
+}
+
+.bouton {
+  background: #0f5c56;
+  color: white;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+
+  &:hover {
+    background: #0d4d48;
+  }
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid #dde3dd;
+  border-radius: 8px;
+  color: #12181b;
+
+  p {
+    margin: 0;
+  }
+}
+
+.ligne {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pastille {
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid #0f5c56;
+  color: #0f5c56;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+
+  &.en-attente {
+    background: rgba(15, 92, 86, 0.08);
+  }
+
+  &.inactive {
+    border-color: #dde3dd;
+    color: #67736e;
+  }
+}
+
+.lecture {
+  color: #67736e;
+  font-size: 0.9rem;
+  white-space: pre-line;
+}
+
+.coordonnees {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid #0f5c56;
+  border-radius: 8px;
+  background: rgba(15, 92, 86, 0.08);
+}
+
+.discret {
+  color: #67736e;
+  font-size: 0.85rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.annuler {
+  padding: 0.4rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid #d64545;
+  background: white;
+  color: #d64545;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(214, 69, 69, 0.06);
+  }
+}

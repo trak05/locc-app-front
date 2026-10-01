@@ -1,0 +1,68 @@
+<p-confirmpopup />
+
+<div class="list-header">
+  <h1>Mes places</h1>
+  <span class="header-links">
+    <a routerLink="/parking/loueur/demandes" class="demandes-link">Demandes reçues</a>
+    <a routerLink="/parking/loueur/locations" class="demandes-link">Mes locations</a>
+    <a routerLink="/parking/loueur/places/new" class="add-button">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 5v14M5 12h14" />
+      </svg>
+      Publier une place
+    </a>
+  </span>
+</div>
+
+@if (errorMessage()) {
+  <p class="error">{{ errorMessage() }}</p>
+}
+
+@if (isLoading()) {
+  <p>Chargement...</p>
+} @else if (places().length === 0) {
+  <div class="vide">
+    <p>Vous n'avez encore publié aucune place. Publiez votre première place pour la proposer aux voyageurs.</p>
+    <a routerLink="/parking/loueur/places/new" class="add-button">Publier une place</a>
+  </div>
+} @else {
+  <table>
+    <thead>
+      <tr>
+        <th>Ville</th>
+        <th>Quartier</th>
+        <th>Adresse</th>
+        <th>Type</th>
+        <th>Prix / jour</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (p of places(); track p.id) {
+        <tr>
+          <td>{{ villeLabels[p.ville] }}</td>
+          <td>{{ p.quartier }}</td>
+          <td>{{ p.adresse }}</td>
+          <td>{{ typeLabels[p.type] }}</td>
+          <td>{{ p.prixParJour | prixDt }}</td>
+          <td>
+            <span class="actions">
+              <a [routerLink]="['/parking/loueur/places', p.id, 'edit']" class="edit-link" aria-label="Modifier cette place">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 20h9" />
+                  <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+                </svg>
+              </a>
+              <button type="button" class="delete-icon" (click)="confirmRetrait($event, p.id)" aria-label="Retirer cette place">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="3 6 5 6 21 6" />
+                  <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                </svg>
+              </button>
+            </span>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}

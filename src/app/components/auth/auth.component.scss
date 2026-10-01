@@ -99,6 +99,12 @@ input {
   margin: 0;
 }
 
+.success {
+  color: #0f5c56;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
 .submit {
   padding: 0.75rem;
   border-radius: 8px;
@@ -121,6 +127,8 @@ input {
 
 .links {
   display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
   justify-content: space-between;
   margin-top: 1.25rem;
   font-size: 0.85rem;

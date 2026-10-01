@@ -1,0 +1,98 @@
+<section class="recherche-page">
+  <div class="page-header">
+    <h1>Espace Parking — Voyageur</h1>
+    <a routerLink="/parking/voyageur/reservations" class="lien-header">Mes réservations</a>
+  </div>
+  <p class="sous-titre">Trouvez une place de parking pour votre séjour.</p>
+
+  <form [formGroup]="form" (ngSubmit)="rechercher()">
+    <label>
+      Ville
+      <select formControlName="ville">
+        <option [ngValue]="null">Choisir une ville</option>
+        @for (v of villes; track v) {
+          <option [ngValue]="v">{{ villeLabels[v] }}</option>
+        }
+      </select>
+    </label>
+    @if (form.controls.ville.touched && form.controls.ville.hasError('required')) {
+      <p class="error">Choisissez une ville.</p>
+    }
+
+    <div class="dates">
+      <div class="champ">
+        <label>
+          Date d'arrivée
+          <input type="date" formControlName="arrivee" [min]="aujourdhui" />
+        </label>
+        @if (form.controls.arrivee.touched) {
+          @if (form.controls.arrivee.hasError('required')) {
+            <p class="error">Choisissez une date d'arrivée.</p>
+          } @else if (form.hasError('arriveePassee')) {
+            <p class="error">La date d'arrivée ne peut pas être dans le passé.</p>
+          }
+        }
+      </div>
+
+      <div class="champ">
+        <label>
+          Date de départ
+          <input type="date" formControlName="depart" [min]="form.controls.arrivee.value || aujourdhui" />
+        </label>
+        @if (form.controls.depart.touched) {
+          @if (form.controls.depart.hasError('required')) {
+            <p class="error">Choisissez une date de départ.</p>
+          } @else if (form.hasError('departAvantArrivee')) {
+            <p class="error">La date de départ doit être le jour de l'arrivée ou après.</p>
+          } @else if (form.hasError('periodeTropLongue')) {
+            <p class="error">La période ne peut pas dépasser 60 jours.</p>
+          }
+        }
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="submit" class="submit">Rechercher</button>
+    </div>
+  </form>
+
+  @if (criteres(); as c) {
+    <div class="resultats">
+      @if (chargement()) {
+        <p>Recherche...</p>
+      } @else if (erreur()) {
+        <p class="error">{{ erreur() }}</p>
+      } @else if (resultatsResource.value().length === 0) {
+        <div class="vide">
+          <p>
+            Aucune place n'est proposée à {{ villeLabels[c.ville] }} pour ces dates. Essayez une autre ville ou
+            d'autres dates.
+          </p>
+        </div>
+      } @else {
+        @let places = resultatsResource.value();
+        <p class="entete">
+          {{ places.length }} {{ places.length > 1 ? 'places' : 'place' }} à {{ villeLabels[c.ville] }} du
+          {{ c.arrivee | date: 'dd/MM/yyyy' }} au {{ c.depart | date: 'dd/MM/yyyy' }} ({{ places[0].nbJours }}
+          {{ places[0].nbJours > 1 ? 'jours' : 'jour' }})
+        </p>
+        <ul>
+          @for (p of places; track p.id) {
+            <li>
+              <a [routerLink]="['/parking/voyageur/places', p.id]" [queryParamsHandling]="'preserve'">
+                <span class="lieu">
+                  <strong>{{ p.quartier }}</strong>
+                  <span class="type">{{ typeLabels[p.type] }}</span>
+                </span>
+                <span class="prix">
+                  <span>{{ p.prixParJour | prixDt }} / jour</span>
+                  <strong>Total : {{ p.prixTotal | prixDt }}</strong>
+                </span>
+              </a>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+  }
+</section>

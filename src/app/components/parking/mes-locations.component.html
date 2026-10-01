@@ -1,0 +1,95 @@
+<p-confirmpopup />
+
+<section class="locations-page">
+  <div class="page-header">
+    <h1>Mes locations</h1>
+    <a routerLink="/parking/loueur" class="lien-header">Mes places</a>
+  </div>
+
+  @if (errorMessage()) {
+    <p class="error">{{ errorMessage() }}</p>
+  }
+
+  @if (chargement()) {
+    <p>Chargement...</p>
+  } @else if (enErreur()) {
+    <p class="error">Impossible d'afficher vos locations. Veuillez réessayer.</p>
+  } @else if (locationsResource.value().length === 0) {
+    <div class="vide">
+      <p>Vous n'avez aucune réservation acceptée pour le moment.</p>
+    </div>
+  } @else {
+    <label class="filtre">
+      <input type="checkbox" [checked]="seulementNonPayees()" (change)="basculerFiltre($event)" />
+      Non payées
+    </label>
+
+    @if (locationsAffichees().length === 0) {
+      <div class="vide">
+        <p>Aucune location non payée.</p>
+      </div>
+    } @else {
+      <ul>
+        @for (l of locationsAffichees(); track l.id) {
+          <li>
+            <div class="ligne">
+              <strong>{{ l.quartier }}, {{ villeLabels[l.ville] }} — {{ typeLabels[l.type] }}</strong>
+              <span class="pastille" [class.en-cours]="l.periode === 'EN_COURS'" [class.inactive]="l.periode === 'PASSEE'">{{ periodeLabels[l.periode] }}</span>
+            </div>
+            <p>
+              du {{ l.arrivee | date: 'dd/MM/yyyy' }} au {{ l.depart | date: 'dd/MM/yyyy' }} ({{ l.nbJours }}
+              {{ l.nbJours > 1 ? 'jours' : 'jour' }})
+            </p>
+            <p>Voyageur : {{ l.voyageurNom }}</p>
+            @if (l.telephoneVoyageur) {
+              <p>Téléphone du voyageur : {{ l.telephoneVoyageur }}</p>
+            }
+            <p><strong>Total : {{ l.prixTotal | prixDt }}</strong></p>
+            <div class="ligne">
+              <span class="pastille" [class.payee]="l.etatPaiement === 'PAYE'" [class.inactive]="l.etatPaiement !== 'PAYE'">{{ paiementLabels[l.etatPaiement] }}</span>
+              @if (l.etatPaiement === 'PAYE' && l.moyenPaiement && l.datePaiement) {
+                <span class="discret">{{ moyenLabels[l.moyenPaiement] }}, le {{ l.datePaiement | date: 'dd/MM/yyyy' }}</span>
+              }
+            </div>
+
+            @if (paiementOuvertId() === l.id) {
+              <form class="panneau" [formGroup]="form" (ngSubmit)="confirmerPaiement(l)">
+                <label>
+                  Moyen de paiement
+                  <select formControlName="moyenPaiement">
+                    <option value="" disabled>Choisir...</option>
+                    @for (m of moyens; track m) {
+                      <option [value]="m">{{ moyenLabels[m] }}</option>
+                    }
+                  </select>
+                </label>
+                @if (form.controls.moyenPaiement.touched && form.controls.moyenPaiement.invalid) {
+                  <span class="error">Le moyen de paiement est obligatoire.</span>
+                }
+                <label>
+                  Date du paiement
+                  <input type="date" formControlName="datePaiement" [max]="aujourdhui" />
+                </label>
+                @if (form.controls.datePaiement.touched && form.controls.datePaiement.invalid) {
+                  <span class="error">La date du paiement est obligatoire.</span>
+                }
+                <div class="actions">
+                  <button type="button" class="secondaire" (click)="fermerPaiement()">Retour</button>
+                  <button type="submit" class="principal" [disabled]="envoiEnCours()">Enregistrer</button>
+                </div>
+              </form>
+            } @else if (l.paiementModifiable) {
+              <div class="actions">
+                @if (l.etatPaiement === 'NON_PAYE') {
+                  <button type="button" class="principal" [disabled]="envoiEnCours()" (click)="ouvrirPaiement(l.id)">Marquer payée</button>
+                } @else {
+                  <button type="button" class="danger" [disabled]="envoiEnCours()" (click)="confirmNonPayee($event, l)">Repasser à non payée</button>
+                }
+              </div>
+            }
+          </li>
+        }
+      </ul>
+    }
+  }
+</section>
