@@ -71,6 +71,30 @@
   gap: 1rem;
 }
 
+.topnav__role {
+  color: #12181b;
+  opacity: 0.75;
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+
+  @media (max-width: 600px) {
+    display: none;
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .user-badge {
   display: flex;
   align-items: center;

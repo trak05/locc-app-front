@@ -12,6 +12,9 @@
     @if (authService.isOwner()) {
       <app-notification-bell />
     }
+    @if (roleLabel(); as label) {
+      <span class="topnav__role"><span class="visually-hidden">Rôle : </span>{{ label }}</span>
+    }
     @if (initials()) {
       <a routerLink="/compte/profil" class="user-badge" title="Mon profil" aria-label="Mon profil">{{ initials() }}</a>
     }
