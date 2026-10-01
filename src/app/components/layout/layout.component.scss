@@ -1,4 +1,5 @@
 .topnav {
+  position: relative;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -79,6 +80,26 @@
   white-space: nowrap;
 
   @media (max-width: 600px) {
+    display: none;
+  }
+}
+
+.topnav__center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: #12181b;
+  opacity: 0.75;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+
+  // Masqué sous 1024px : en dessous, liens + groupe droit peuvent atteindre le centre.
+  @media (max-width: 1023px) {
     display: none;
   }
 }
