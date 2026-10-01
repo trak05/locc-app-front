@@ -1,8 +1,12 @@
 import { Component, computed, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { ParkingRole, Role } from '../../models/auth.model';
 import { AuthService } from '../../services/auth.service';
 import { NotificationService } from '../../services/notification.service';
 import { NotificationBellComponent } from '../notifications/notification-bell.component';
+
+const ROLE_LABELS: Record<Role, string> = { OWNER: 'Propriétaire', TENANT: 'Locataire' };
+const PARKING_ROLE_LABELS: Record<ParkingRole, string> = { LOUEUR: 'Loueur de place', VOYAGEUR: 'Voyageur' };
 
 /**
  * Shell v0 : juste une barre de nav minimale + router-outlet. Pas de
@@ -30,6 +34,15 @@ export class LayoutComponent {
     const info = this.currentUser()?.personalInfo;
     if (!info) return '';
     return (info.nom.charAt(0) + info.prenom.charAt(0)).toUpperCase();
+  });
+
+  roleLabel = computed(() => {
+    const u = this.currentUser();
+    if (!u) return '';
+    const labels: string[] = [];
+    if (u.role) labels.push(ROLE_LABELS[u.role]);
+    if (u.parkingRole) labels.push(PARKING_ROLE_LABELS[u.parkingRole]);
+    return labels.join(', ');
   });
 
   constructor() {
