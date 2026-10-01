@@ -10,6 +10,7 @@ import { TYPE_PLACE_LABELS, VILLE_LABELS } from '../../models/place-parking.mode
 import {
   ETAT_PAIEMENT_LABELS,
   ETAT_RESERVATION_LOUEUR_LABELS,
+  MOYEN_PAIEMENT_LABELS,
   ReservationRecueParking,
 } from '../../models/reservation-parking.model';
 import { PrixDtPipe } from '../../pipe/prix-dt.pipe';
@@ -34,6 +35,7 @@ export class DemandesRecuesComponent {
   typeLabels: Record<string, string> = TYPE_PLACE_LABELS;
   etatLabels: Record<string, string> = ETAT_RESERVATION_LOUEUR_LABELS;
   paiementLabels: Record<string, string> = ETAT_PAIEMENT_LABELS;
+  moyenLabels: Record<string, string> = MOYEN_PAIEMENT_LABELS;
   motifMax = MOTIF_MAX;
 
   errorMessage = signal<string | null>(null);

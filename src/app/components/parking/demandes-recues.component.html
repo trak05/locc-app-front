@@ -25,7 +25,12 @@
     @if (d.motif) {
       <p class="lecture">Motif : {{ d.motif }}</p>
     }
-    <p>Paiement : {{ paiementLabels[d.etatPaiement] }}</p>
+    <p>
+      Paiement : {{ paiementLabels[d.etatPaiement] }}
+      @if (d.etatPaiement === 'PAYE' && d.moyenPaiement && d.datePaiement) {
+        ({{ moyenLabels[d.moyenPaiement] }}, le {{ d.datePaiement | date: 'dd/MM/yyyy' }})
+      }
+    </p>
     <p class="discret">Demandée le {{ d.demandeeLe | date: 'dd/MM/yyyy' }}</p>
 
     @if (panneau()?.id === d.id) {
