@@ -1,0 +1,67 @@
+<!-- Rien n'est rendu pour un compte déjà activé, sauf le message de succès juste après l'activation. -->
+@if (successMessage() || !currentUser()?.parkingRole) {
+<section class="activation">
+  @if (successMessage()) {
+    <p class="success">{{ successMessage() }}</p>
+  } @else {
+    <h2>Module Parking</h2>
+
+    @if (!formOuvert()) {
+      <button type="button" class="submit" (click)="ouvrir()">Activer le module Parking</button>
+    } @else {
+      <form [formGroup]="form" (ngSubmit)="activer()">
+        <p class="hint">Votre identifiant, votre email et votre mot de passe restent inchangés.</p>
+
+        <fieldset class="choices">
+          <legend>Rôle Parking</legend>
+          <label class="inline">
+            <input type="radio" formControlName="parkingRole" value="LOUEUR" />
+            Loueur de place (je propose une place)
+          </label>
+          <label class="inline">
+            <input type="radio" formControlName="parkingRole" value="VOYAGEUR" />
+            Voyageur (je cherche une place)
+          </label>
+        </fieldset>
+        @if (form.controls.parkingRole.touched && form.controls.parkingRole.hasError('required')) {
+          <p class="error">Choisissez votre rôle Parking.</p>
+        }
+
+        @if (telephoneManquant()) {
+          <label>
+            Téléphone
+            <input type="tel" formControlName="telephone" autocomplete="tel" />
+          </label>
+          @if (form.controls.telephone.touched && form.controls.telephone.hasError('required')) {
+            <p class="error">Le téléphone est obligatoire.</p>
+          }
+          @if (form.controls.telephone.touched && form.controls.telephone.hasError('pattern')) {
+            <p class="error">Le numéro de téléphone est invalide.</p>
+          }
+        }
+
+        <label class="inline">
+          <input type="checkbox" formControlName="cguAcceptees" />
+          <span>
+            J'accepte les
+            <a routerLink="/mentions-legales" target="_blank" rel="noopener">conditions générales d'utilisation</a>
+          </span>
+        </label>
+        @if (form.controls.cguAcceptees.touched && form.controls.cguAcceptees.hasError('required')) {
+          <p class="error">Vous devez accepter les conditions générales d'utilisation.</p>
+        }
+
+        @if (errorMessage()) {
+          <p class="error">{{ errorMessage() }}</p>
+        }
+
+        <div class="actions">
+          <button type="submit" class="submit" [disabled]="loading()">
+            {{ loading() ? 'Activation...' : 'Activer le module Parking' }}
+          </button>
+        </div>
+      </form>
+    }
+  }
+</section>
+}

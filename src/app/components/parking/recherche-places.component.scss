@@ -1,0 +1,166 @@
+.recherche-page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+h1 {
+  margin: 0 0 0.5rem;
+  font-size: 1.4rem;
+  color: #12181b;
+}
+
+.page-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.lien-header {
+  color: #0f5c56;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.sous-titre {
+  margin: 0 0 1.5rem;
+  color: #67736e;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #12181b;
+}
+
+input,
+select {
+  padding: 0.65rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #dde3dd;
+  font: inherit;
+
+  &:focus {
+    outline: none;
+    border-color: #0f5c56;
+    box-shadow: 0 0 0 3px rgba(15, 92, 86, 0.12);
+  }
+}
+
+.dates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.champ {
+  flex: 1 1 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.error {
+  color: #d64545;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.submit {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  background: #0f5c56;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    background: #0d4d48;
+  }
+}
+
+.resultats {
+  margin-top: 2rem;
+}
+
+.entete {
+  color: #67736e;
+}
+
+.vide {
+  padding: 1.5rem 1.25rem;
+  border: 1px dashed #dde3dd;
+  border-radius: 8px;
+  text-align: center;
+
+  p {
+    margin: 0;
+    color: #67736e;
+  }
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+li a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid #dde3dd;
+  border-radius: 8px;
+  color: #12181b;
+  text-decoration: none;
+
+  &:hover {
+    border-color: #0f5c56;
+  }
+}
+
+.lieu,
+.prix {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.type {
+  font-size: 0.85rem;
+  color: #67736e;
+}
+
+.prix {
+  align-items: flex-end;
+
+  strong {
+    color: #0f5c56;
+  }
+}

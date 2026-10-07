@@ -1,0 +1,97 @@
+<section class="detail-page">
+  <a routerLink="/parking/voyageur" queryParamsHandling="preserve" class="retour">Retour aux résultats</a>
+
+  @if (idInvalide) {
+    <p class="error">{{ messagePlaceIndisponible }}</p>
+  } @else if (datesAbsentes) {
+    <p class="error">{{ messageDatesInvalides }}</p>
+  } @else if (chargement()) {
+    <p>Chargement...</p>
+  } @else if (erreur()) {
+    <p class="error">{{ erreur() }}</p>
+  } @else {
+    @let place = placeResource.value();
+    @if (place) {
+      <h1>{{ place.quartier }}, {{ villeLabels[place.ville] }}</h1>
+
+      <dl>
+        <dt>Ville</dt>
+        <dd>{{ villeLabels[place.ville] }}</dd>
+        <dt>Quartier</dt>
+        <dd>{{ place.quartier }}</dd>
+        <dt>Type</dt>
+        <dd>{{ typeLabels[place.type] }}</dd>
+        <dt>Prix par jour</dt>
+        <dd>{{ place.prixParJour | prixDt }}</dd>
+        <dt>Prix total</dt>
+        <dd>
+          <strong>{{ place.prixTotal | prixDt }}</strong>
+          ({{ place.nbJours }} {{ place.nbJours > 1 ? 'jours' : 'jour' }}, du {{ arrivee | date: 'dd/MM/yyyy' }}
+          au {{ depart | date: 'dd/MM/yyyy' }})
+        </dd>
+        <dt>Description</dt>
+        <dd>{{ place.description ?? 'Aucune description.' }}</dd>
+      </dl>
+
+      <p class="mention">
+        L'adresse exacte et le téléphone du loueur vous seront communiqués après acceptation de votre demande.
+      </p>
+
+      @if (!recapOuvert()) {
+        <button type="button" class="demander" (click)="ouvrirRecap()">Demander la réservation</button>
+      } @else {
+        <section class="recap">
+          <h2>Récapitulatif de votre demande</h2>
+
+          <dl>
+            <dt>Ville</dt>
+            <dd>{{ villeLabels[place.ville] }}</dd>
+            <dt>Quartier</dt>
+            <dd>{{ place.quartier }}</dd>
+            <dt>Type</dt>
+            <dd>{{ typeLabels[place.type] }}</dd>
+            <dt>Dates</dt>
+            <dd>du {{ arrivee | date: 'dd/MM/yyyy' }} au {{ depart | date: 'dd/MM/yyyy' }}</dd>
+            <dt>Nombre de jours</dt>
+            <dd>{{ place.nbJours }}</dd>
+            <dt>Prix total</dt>
+            <dd><strong>{{ place.prixTotal | prixDt }}</strong></dd>
+          </dl>
+
+          <ul class="mentions">
+            <li>Le paiement se fait directement auprès du loueur, en dehors de l'application.</li>
+            <li>L'adresse exacte et le téléphone du loueur vous seront communiqués après acceptation de votre demande.</li>
+            <li>Annulation gratuite jusqu'à la veille de votre arrivée.</li>
+          </ul>
+
+          <form [formGroup]="form" (ngSubmit)="confirmer()">
+            <label>
+              Véhicule (facultatif)
+              <input type="text" formControlName="vehicule" placeholder="Ex. : Peugeot 208 grise" />
+            </label>
+            @if (form.controls.vehicule.touched && form.controls.vehicule.hasError('maxlength')) {
+              <p class="error">50 caractères maximum.</p>
+            }
+
+            <label>
+              Message au loueur (facultatif)
+              <textarea formControlName="message" rows="4"></textarea>
+            </label>
+            @if (form.controls.message.touched && form.controls.message.hasError('maxlength')) {
+              <p class="error">500 caractères maximum.</p>
+            }
+
+            @if (erreurEnvoi()) {
+              <p class="error">{{ erreurEnvoi() }}</p>
+            }
+
+            <div class="actions">
+              <button type="button" class="abandonner" (click)="abandonner()">Abandonner</button>
+              <button type="submit" class="confirmer">Confirmer la demande</button>
+            </div>
+          </form>
+        </section>
+      }
+    }
+  }
+</section>

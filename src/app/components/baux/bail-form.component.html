@@ -2,28 +2,35 @@
   <p>Cette page est réservée aux propriétaires.</p>
 } @else {
   <div class="bail-form-page">
-    <h1>Ajouter un bail</h1>
+    <h1>{{ isEditMode() ? 'Modifier le bail' : 'Ajouter un bail' }}</h1>
 
     <form [formGroup]="form" (ngSubmit)="save()">
-      <label>
-        Bien
-        <select formControlName="bienId">
-          <option [value]="null" disabled>Sélectionner un bien</option>
-          @for (bien of biens(); track bien.id) {
-            <option [value]="bien.id">{{ bien.nom }}</option>
-          }
-        </select>
-      </label>
+      @if (isEditMode()) {
+        @if (bail(); as b) {
+          <p class="readonly-field">Bien : {{ b.bien.nom }}</p>
+          <p class="readonly-field">Locataire : {{ b.locataire.personalInfo.prenom }} {{ b.locataire.personalInfo.nom }}</p>
+        }
+      } @else {
+        <label>
+          Bien
+          <select formControlName="bienId">
+            <option [value]="null" disabled>Sélectionner un bien</option>
+            @for (bien of biens(); track bien.id) {
+              <option [value]="bien.id">{{ bien.nom }}</option>
+            }
+          </select>
+        </label>
 
-      <label>
-        Locataire
-        <select formControlName="locataireId">
-          <option [value]="null" disabled>Sélectionner un locataire</option>
-          @for (locataire of locataires(); track locataire.id) {
-            <option [value]="locataire.id">{{ locataire.personalInfo.prenom }} {{ locataire.personalInfo.nom }}</option>
-          }
-        </select>
-      </label>
+        <label>
+          Locataire
+          <select formControlName="locataireId">
+            <option [value]="null" disabled>Sélectionner un locataire</option>
+            @for (locataire of locataires(); track locataire.id) {
+              <option [value]="locataire.id">{{ locataire.personalInfo.prenom }} {{ locataire.personalInfo.nom }}</option>
+            }
+          </select>
+        </label>
+      }
 
       <label>
         Date de début
