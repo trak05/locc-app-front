@@ -4,7 +4,7 @@
   <p-confirmpopup />
 
   <div class="list-header">
-    <h1>Baux : {{ baux().length }}</h1>
+    <h1>{{ titre() }}</h1>
     <a routerLink="/baux/new" class="add-button">
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12 5v14M5 12h14" />
@@ -19,7 +19,9 @@
 
   @if (isLoading()) {
     <p>Chargement...</p>
-  } @else {
+  } @else if (enErreur()) {
+    <p class="error">Impossible d'afficher les baux. Veuillez réessayer.</p>
+  } @else if (baux().length > 0) {
     <table>
       <thead>
         <tr>
@@ -64,10 +66,6 @@
                 </button>
               </span>
             </td>
-          </tr>
-        } @empty {
-          <tr>
-            <td colspan="7">Aucun bail pour l'instant.</td>
           </tr>
         }
       </tbody>

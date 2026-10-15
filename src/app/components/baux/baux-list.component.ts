@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
@@ -20,6 +20,18 @@ export class BauxListComponent {
   private confirmationService = inject(ConfirmationService);
   baux = this.bailService.bauxResource.value;
   isLoading = this.bailService.bauxResource.isLoading;
+  enErreur = computed(() => !!this.bailService.bauxResource.error());
+  // hasValue() est vrai dès le chargement initial à cause de defaultValue: [] : on s'appuie sur status().
+  listeConnue = computed(() =>
+    ['resolved', 'local', 'reloading'].includes(this.bailService.bauxResource.status())
+  );
+  titre = computed(() => {
+    if (!this.listeConnue()) {
+      return 'Baux';
+    }
+    const n = this.baux().length;
+    return n === 0 ? 'Baux : Aucun bail pour l\'instant' : `Baux : ${n}`;
+  });
 
   deleteError = signal<string | null>(null);
 
