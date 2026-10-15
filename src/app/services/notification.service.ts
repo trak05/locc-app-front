@@ -2,13 +2,14 @@ import { Injectable, inject, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AvisNotification } from '../models/paiement.model';
 import { AuthService } from './auth.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NotificationService {
-  private readonly API_BASE = 'http://localhost:8081/api';
-  private readonly WS_BASE = 'ws://localhost:8081/ws/notifications';
+  private readonly API_BASE = environment.apiBaseUrl;
+  private readonly WS_BASE = `${environment.wsBaseUrl}/ws/notifications`;
   private readonly http = inject(HttpClient);
   private readonly authService = inject(AuthService);
 

@@ -1,4 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
 import { ConfirmPopup } from 'primeng/confirmpopup';
@@ -8,7 +9,7 @@ import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-biens-list',
   standalone: true,
-  imports: [RouterLink, ConfirmPopup],
+  imports: [RouterLink, ConfirmPopup, DecimalPipe, DatePipe],
   templateUrl: './biens-list.component.html',
   styleUrl: './biens-list.component.scss',
 })
@@ -18,6 +19,10 @@ export class BiensListComponent {
   private confirmationService = inject(ConfirmationService);
   biens = this.bienService.biensResource.value;
   isLoading = this.bienService.biensResource.isLoading;
+  tauxOccupation = this.bienService.tauxOccupationResource.value;
+  tauxParBien = computed(
+    () => new Map((this.tauxOccupation()?.biens ?? []).map((t) => [t.bien.id, t.tauxOccupation]))
+  );
 
   confirmDelete(event: Event, id: number): void {
     this.confirmationService.confirm({

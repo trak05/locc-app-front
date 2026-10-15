@@ -1,0 +1,46 @@
+<div class="mot-de-passe-page">
+  <h1>Changer mon mot de passe</h1>
+
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <label>
+      Mot de passe actuel
+      <input type="password" formControlName="currentPassword" autocomplete="current-password" maxlength="72" />
+    </label>
+
+    <label>
+      Nouveau mot de passe
+      <input type="password" formControlName="newPassword" autocomplete="new-password" maxlength="72" />
+      <p class="hint">Au moins 8 caractères, différent du mot de passe actuel.</p>
+    </label>
+
+    @if (form.controls.newPassword.dirty && form.controls.newPassword.hasError('minlength')) {
+      <p class="error">{{ messages.minLength }}</p>
+    }
+    @if (form.controls.newPassword.dirty && form.hasError('sameAsCurrent')) {
+      <p class="error">{{ messages.sameAsCurrent }}</p>
+    }
+
+    <label>
+      Confirmer le nouveau mot de passe
+      <input type="password" formControlName="confirmPassword" autocomplete="new-password" maxlength="72" />
+    </label>
+
+    @if (form.controls.confirmPassword.dirty && form.hasError('passwordMismatch')) {
+      <p class="error">{{ messages.mismatch }}</p>
+    }
+
+    @if (errorMessage()) {
+      <p class="error">{{ errorMessage() }}</p>
+    }
+    @if (successMessage()) {
+      <p class="success">{{ successMessage() }}</p>
+    }
+
+    <div class="actions">
+      <a routerLink="/compte/profil" class="cancel">Retour au profil</a>
+      <button type="submit" class="submit" [disabled]="form.invalid || loading()">
+        {{ loading() ? 'Enregistrement...' : 'Enregistrer' }}
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,98 @@
+<div class="place-form-page">
+  <h1>{{ isEditMode() ? 'Modifier la place' : 'Publier une place' }}</h1>
+
+  @if (placeIntrouvable()) {
+    <p class="error">Cette place est introuvable.</p>
+    <a routerLink="/parking/loueur" class="cancel">Retour à mes places</a>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <label>
+        Ville
+        <select formControlName="ville">
+          <option [ngValue]="null">Choisir une ville</option>
+          @for (v of villes; track v) {
+            <option [ngValue]="v">{{ villeLabels[v] }}</option>
+          }
+        </select>
+      </label>
+      @if (form.controls.ville.touched && form.controls.ville.hasError('required')) {
+        <p class="error">Choisissez une ville.</p>
+      }
+
+      <label>
+        Quartier
+        <input type="text" formControlName="quartier" />
+      </label>
+      @if (form.controls.quartier.touched) {
+        @if (form.controls.quartier.hasError('required') || form.controls.quartier.hasError('pattern')) {
+          <p class="error">Le quartier est obligatoire.</p>
+        } @else if (form.controls.quartier.hasError('maxlength')) {
+          <p class="error">Le quartier ne doit pas dépasser 100 caractères.</p>
+        }
+      }
+
+      <label>
+        Adresse
+        <input type="text" formControlName="adresse" />
+      </label>
+      @if (form.controls.adresse.touched) {
+        @if (form.controls.adresse.hasError('required') || form.controls.adresse.hasError('pattern')) {
+          <p class="error">L'adresse est obligatoire.</p>
+        } @else if (form.controls.adresse.hasError('maxlength')) {
+          <p class="error">L'adresse ne doit pas dépasser 255 caractères.</p>
+        }
+      }
+
+      <fieldset class="choices">
+        <legend>Type de place</legend>
+        <label class="inline">
+          <input type="radio" formControlName="type" value="COUVERTE" />
+          {{ typeLabels.COUVERTE }}
+        </label>
+        <label class="inline">
+          <input type="radio" formControlName="type" value="NON_COUVERTE" />
+          {{ typeLabels.NON_COUVERTE }}
+        </label>
+      </fieldset>
+      @if (form.controls.type.touched && form.controls.type.hasError('required')) {
+        <p class="error">Choisissez le type de place.</p>
+      }
+
+      <label>
+        Prix par jour (DT)
+        <input type="number" formControlName="prixParJour" step="0.001" min="0" />
+      </label>
+      @if (form.controls.prixParJour.touched) {
+        @if (form.controls.prixParJour.hasError('required')) {
+          <p class="error">Le prix par jour est obligatoire.</p>
+        } @else if (form.controls.prixParJour.hasError('min')) {
+          <p class="error">Le prix doit être strictement positif.</p>
+        } @else if (form.controls.prixParJour.hasError('max')) {
+          <p class="error">Le prix ne peut pas dépasser 999 999,999 DT.</p>
+        } @else if (form.controls.prixParJour.hasError('decimales')) {
+          <p class="error">Le prix accepte au plus 3 décimales (millimes).</p>
+        }
+      }
+
+      <label>
+        Description (facultative)
+        <textarea formControlName="description" rows="4"></textarea>
+        <span class="hint">{{ form.controls.description.value.length }} / 1 000</span>
+      </label>
+      @if (form.controls.description.touched && form.controls.description.hasError('maxlength')) {
+        <p class="error">La description ne doit pas dépasser 1 000 caractères.</p>
+      }
+
+      @if (errorMessage()) {
+        <p class="error">{{ errorMessage() }}</p>
+      }
+
+      <div class="actions">
+        <a routerLink="/parking/loueur" class="cancel">Annuler</a>
+        <button type="submit" class="submit" [disabled]="loading()">
+          {{ loading() ? 'Enregistrement...' : isEditMode() ? 'Enregistrer' : 'Publier' }}
+        </button>
+      </div>
+    </form>
+  }
+</div>

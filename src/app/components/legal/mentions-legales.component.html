@@ -1,0 +1,103 @@
+<main class="legal-page">
+  <div class="legal-page__inner">
+    <svg class="brand" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="LocApp">
+      <rect width="64" height="64" rx="16" fill="#0f5c56" />
+      <text x="32" y="29" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" letter-spacing="1" fill="#f4efe4">LOC</text>
+      <text x="32" y="45" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" letter-spacing="1" fill="#f4efe4">APP</text>
+    </svg>
+
+    <h1>Mentions légales</h1>
+
+    @if (TEXTE_PROVISOIRE) {
+      <p class="provisoire" role="note">Texte provisoire – en attente de validation par l'éditeur</p>
+    }
+
+    <section>
+      <h2>Éditeur de l'application</h2>
+      <p>
+        [À COMPLÉTER : nom et prénom de l'éditeur (ou raison sociale)]<br />
+        [À COMPLÉTER : adresse postale de l'éditeur]<br />
+        E-mail : <a [href]="'mailto:' + contactEmail">{{ contactEmail }}</a>
+      </p>
+    </section>
+
+    <section>
+      <h2>Directeur de la publication</h2>
+      <p>[À COMPLÉTER : nom du directeur de la publication]</p>
+    </section>
+
+    <section>
+      <h2>Hébergement</h2>
+      <p>
+        [À COMPLÉTER : raison sociale de l'hébergeur]<br />
+        [À COMPLÉTER : adresse de l'hébergeur]<br />
+        [À COMPLÉTER : téléphone de l'hébergeur]
+      </p>
+    </section>
+
+    <section>
+      <h2>Contact</h2>
+      <p>
+        Pour toute question relative à l'application, vous pouvez écrire à
+        <a [href]="'mailto:' + contactEmail">{{ contactEmail }}</a>.
+      </p>
+    </section>
+
+    <section>
+      <h2>Données personnelles</h2>
+
+      <h3>Responsable du traitement</h3>
+      <p>Le responsable du traitement des données personnelles est l'éditeur de l'application, désigné ci-dessus.</p>
+
+      <h3>Données traitées</h3>
+      <ul>
+        <li>Identifiant de connexion et mot de passe (stocké sous forme chiffrée) ;</li>
+        <li>Civilité, nom, prénom, adresse e-mail et numéro de téléphone ;</li>
+        <li>Date de dernière connexion ;</li>
+        <li>Informations relatives aux biens, aux baux, aux paiements et aux avis d'échéance.</li>
+      </ul>
+
+      <h3>Finalités</h3>
+      <ul>
+        <li>Gestion locative (biens, baux, paiements, avis d'échéance) ;</li>
+        <li>Authentification des utilisateurs ;</li>
+        <li>Envoi des e-mails de réinitialisation du mot de passe et des avis d'échéance.</li>
+      </ul>
+
+      <h3>Base légale</h3>
+      <p>
+        Les traitements reposent sur l'exécution du contrat de location et sur l'intérêt légitime de l'éditeur à assurer
+        la sécurité et le bon fonctionnement de l'application.
+      </p>
+
+      <h3>Destinataires</h3>
+      <p>
+        Les données sont accessibles au propriétaire et à l'hébergeur, dans la limite de ses missions techniques. Elles ne
+        font l'objet d'aucune cession à des tiers.
+      </p>
+
+      <h3>Durée de conservation</h3>
+      <p>[À COMPLÉTER : durées de conservation des données]</p>
+
+      <h3>Vos droits</h3>
+      <p>
+        Vous disposez d'un droit d'accès, de rectification, d'effacement, de limitation, d'opposition et de portabilité de
+        vos données. Pour les exercer, écrivez à
+        <a [href]="'mailto:' + contactEmail">{{ contactEmail }}</a>. Vous pouvez également introduire une réclamation
+        auprès de la CNIL (<a href="https://www.cnil.fr" rel="noopener">www.cnil.fr</a>).
+      </p>
+
+      <h3>Stockage local</h3>
+      <p>
+        L'application enregistre dans le stockage local de votre navigateur uniquement le jeton de session et la date de
+        dernière connexion, strictement nécessaires à son fonctionnement. Elle n'utilise aucun cookie de mesure
+        d'audience ni aucun traceur tiers.
+      </p>
+    </section>
+
+    <footer>
+      <p class="maj">Dernière mise à jour : {{ derniereMiseAJour }}</p>
+      <a class="retour" routerLink="/login">Retour à la connexion</a>
+    </footer>
+  </div>
+</main>

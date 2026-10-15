@@ -1,0 +1,137 @@
+<div class="login-page">
+  <div class="login-panel">
+    <div class="login-panel__inner">
+      <svg class="brand" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="LocApp">
+        <rect width="64" height="64" rx="16" fill="#0f5c56" />
+        <text x="32" y="29" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" letter-spacing="1" fill="#f4efe4">LOC</text>
+        <text x="32" y="45" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" letter-spacing="1" fill="#f4efe4">APP</text>
+      </svg>
+
+      <h1>Créer un compte Parking</h1>
+      <p class="subtitle">Proposez ou réservez une place de parking en Tunisie.</p>
+
+      <form [formGroup]="form" (ngSubmit)="inscrire()">
+        <label>
+          Nom
+          <input type="text" formControlName="nom" autocomplete="family-name" />
+        </label>
+        @if (form.controls.nom.touched && form.controls.nom.hasError('required')) {
+          <p class="error">Le nom est obligatoire.</p>
+        }
+
+        <label>
+          Prénom
+          <input type="text" formControlName="prenom" autocomplete="given-name" />
+        </label>
+        @if (form.controls.prenom.touched && form.controls.prenom.hasError('required')) {
+          <p class="error">Le prénom est obligatoire.</p>
+        }
+
+        <label>
+          Email
+          <input type="email" formControlName="email" autocomplete="email" />
+        </label>
+        @if (form.controls.email.touched && form.controls.email.hasError('required')) {
+          <p class="error">L'email est obligatoire.</p>
+        }
+        @if (form.controls.email.touched && form.controls.email.hasError('email')) {
+          <p class="error">Le format de l'email est incorrect.</p>
+        }
+
+        <label>
+          Téléphone
+          <input type="tel" formControlName="telephone" autocomplete="tel" placeholder="+216 20 123 456" />
+        </label>
+        @if (form.controls.telephone.touched && form.controls.telephone.hasError('required')) {
+          <p class="error">Le téléphone est obligatoire.</p>
+        }
+        @if (form.controls.telephone.touched && form.controls.telephone.hasError('pattern')) {
+          <p class="error">Le numéro de téléphone est invalide.</p>
+        }
+
+        <label>
+          Identifiant
+          <input type="text" formControlName="username" autocomplete="username" maxlength="50" />
+        </label>
+        @if (form.controls.username.touched && form.controls.username.hasError('required')) {
+          <p class="error">L'identifiant est obligatoire.</p>
+        }
+        @if (form.controls.username.touched && form.controls.username.hasError('pattern')) {
+          <p class="error">L'identifiant ne doit pas contenir d'espace.</p>
+        }
+
+        <label>
+          Mot de passe
+          <input type="password" formControlName="password" autocomplete="new-password" maxlength="72" />
+          <p class="hint">Au moins 8 caractères.</p>
+        </label>
+        @if (form.controls.password.touched && form.controls.password.hasError('required')) {
+          <p class="error">Le mot de passe est obligatoire.</p>
+        }
+        @if (form.controls.password.touched && form.controls.password.hasError('minlength')) {
+          <p class="error">{{ passwordMessages.minLength }}</p>
+        }
+        @if (form.controls.password.touched && form.controls.password.hasError('maxlength')) {
+          <p class="error">{{ passwordMessages.maxLength }}</p>
+        }
+
+        <label>
+          Confirmer le mot de passe
+          <input type="password" formControlName="confirmation" autocomplete="new-password" maxlength="72" />
+        </label>
+        @if (form.controls.confirmation.touched && form.controls.confirmation.hasError('required')) {
+          <p class="error">Confirmez le mot de passe.</p>
+        }
+        @if (form.controls.confirmation.touched && form.hasError('passwordMismatch')) {
+          <p class="error">{{ passwordMessages.mismatch }}</p>
+        }
+
+        <fieldset class="choices">
+          <legend>Rôle Parking</legend>
+          <label class="inline">
+            <input type="radio" formControlName="parkingRole" value="LOUEUR" />
+            Loueur de place (je propose une place)
+          </label>
+          <label class="inline">
+            <input type="radio" formControlName="parkingRole" value="VOYAGEUR" />
+            Voyageur (je cherche une place)
+          </label>
+        </fieldset>
+        @if (form.controls.parkingRole.touched && form.controls.parkingRole.hasError('required')) {
+          <p class="error">Choisissez votre rôle Parking.</p>
+        }
+
+        <label class="inline">
+          <input type="checkbox" formControlName="cguAcceptees" />
+          <span>
+            J'accepte les
+            <a routerLink="/mentions-legales" target="_blank" rel="noopener">conditions générales d'utilisation</a>
+          </span>
+        </label>
+        @if (form.controls.cguAcceptees.touched && form.controls.cguAcceptees.hasError('required')) {
+          <p class="error">Vous devez accepter les conditions générales d'utilisation.</p>
+        }
+
+        @if (errorMessage()) {
+          <p class="error">{{ errorMessage() }}</p>
+        }
+
+        <button type="submit" class="submit" [disabled]="loading()">
+          {{ loading() ? 'Création...' : 'Créer mon compte' }}
+        </button>
+      </form>
+
+      <div class="links">
+        <a routerLink="/login">Déjà un compte ? Se connecter</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="login-hero">
+    <div class="login-hero__blobs" aria-hidden="true"></div>
+    <div class="login-hero__content">
+      <h2>Bienvenue dans <span>l'espace Parking</span></h2>
+      <p>Louez votre place ou trouvez-en une pour votre séjour en Tunisie.</p>
+    </div>
+  </div>
+</div>

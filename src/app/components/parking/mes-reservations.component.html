@@ -1,0 +1,70 @@
+<p-confirmpopup />
+
+<section class="reservations-page">
+  <div class="page-header">
+    <h1>Mes réservations</h1>
+    <a routerLink="/parking/voyageur" class="lien-header">Rechercher une place</a>
+  </div>
+
+  @if (demandeEnvoyee) {
+    <p class="bandeau">Votre demande a été envoyée au loueur.</p>
+  }
+
+  @if (errorMessage()) {
+    <p class="error">{{ errorMessage() }}</p>
+  }
+
+  @if (chargement()) {
+    <p>Chargement...</p>
+  } @else if (enErreur()) {
+    <p class="error">Impossible d'afficher vos réservations. Veuillez réessayer.</p>
+  } @else if (reservationsResource.value().length === 0) {
+    <div class="vide">
+      <p>Vous n'avez encore aucune réservation. Recherchez une place pour votre séjour.</p>
+      <a routerLink="/parking/voyageur" class="bouton">Rechercher une place</a>
+    </div>
+  } @else {
+    <ul>
+      @for (r of reservationsResource.value(); track r.id) {
+        <li>
+          <div class="ligne">
+            <strong>{{ r.quartier }}, {{ villeLabels[r.ville] }}</strong>
+            <span class="pastille" [class.en-attente]="r.etat === 'EN_ATTENTE'" [class.inactive]="r.etat !== 'EN_ATTENTE' && r.etat !== 'ACCEPTEE'">{{ etatLabels[r.etat] }}</span>
+          </div>
+          <p>
+            du {{ r.arrivee | date: 'dd/MM/yyyy' }} au {{ r.depart | date: 'dd/MM/yyyy' }} ({{ r.nbJours }}
+            {{ r.nbJours > 1 ? 'jours' : 'jour' }})
+          </p>
+          <p><strong>Total : {{ r.prixTotal | prixDt }}</strong></p>
+          <p>Paiement : {{ paiementLabels[r.etatPaiement] }}</p>
+          @if (r.vehicule) {
+            <p class="lecture">Véhicule : {{ r.vehicule }}</p>
+          }
+          @if (r.message) {
+            <p class="lecture">Message : {{ r.message }}</p>
+          }
+          @if (r.adresse || r.telephoneLoueur) {
+            <div class="coordonnees">
+              <strong>Coordonnées du loueur</strong>
+              @if (r.adresse) {
+                <p>Adresse : {{ r.adresse }}</p>
+              }
+              @if (r.telephoneLoueur) {
+                <p>Téléphone du loueur : {{ r.telephoneLoueur }}</p>
+              }
+            </div>
+          }
+          @if (r.motif) {
+            <p class="lecture">Motif : {{ r.motif }}</p>
+          }
+          <p class="discret">Demandée le {{ r.demandeeLe | date: 'dd/MM/yyyy' }}</p>
+          @if (r.annulable) {
+            <div class="actions">
+              <button type="button" class="annuler" (click)="confirmAnnulation($event, r.id)">Annuler la demande</button>
+            </div>
+          }
+        </li>
+      }
+    </ul>
+  }
+</section>

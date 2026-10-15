@@ -4,12 +4,13 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { AvisEcheance, Echeance, Paiement, PaiementRequest, SuiviBail } from '../models/paiement.model';
 import { AuthService } from './auth.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PaiementService {
-  private readonly API_BASE = 'http://localhost:8081/api';
+  private readonly API_BASE = environment.apiBaseUrl;
   private readonly http = inject(HttpClient);
   private readonly authService = inject(AuthService);
 

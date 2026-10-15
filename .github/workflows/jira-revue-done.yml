@@ -1,0 +1,79 @@
+name: Jira - Review Done on merge
+
+# When a feature/LOC-<N> pull request is merged into develop, move Jira ticket
+# LOC-<N> to the "Review Done" status. Front and back each have this workflow:
+# the first of the two merges moves the ticket, the second one sees it already
+# there and does nothing.
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - develop
+
+permissions:
+  contents: read
+
+jobs:
+  revue-done:
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'feature/LOC-')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Move the Jira ticket to "Review Done"
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          TARGET_STATUS: Review Done
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "$JIRA_BASE_URL" ] || [ -z "$JIRA_EMAIL" ] || [ -z "$JIRA_API_TOKEN" ]; then
+            echo "::error::Missing secret JIRA_BASE_URL, JIRA_EMAIL or JIRA_API_TOKEN"
+            exit 1
+          fi
+
+          key="${HEAD_REF#feature/}"
+          base="${JIRA_BASE_URL%/}"
+          api="$base/rest/api/3/issue/$key"
+          auth="$JIRA_EMAIL:$JIRA_API_TOKEN"
+
+          # Calls Jira and fails with its HTTP code and error message (never the token) when it isn't 2xx.
+          jira() {
+            local out code
+            out=$(curl -sS -u "$auth" -H "Accept: application/json" -H "Content-Type: application/json" -w $'\n%{http_code}' "$@")
+            code="${out##*$'\n'}"
+            body="${out%$'\n'*}"
+            if [ "${code:0:1}" != "2" ]; then
+              echo "::error::Jira answered HTTP $code: $(echo "$body" | jq -rc '.errorMessages // .message // .' 2>/dev/null | head -c 300)"
+              return 1
+            fi
+          }
+
+          # Checks the credentials first: Jira answers 404 (not 401) on an issue when the token or email is wrong.
+          jira "$base/rest/api/3/myself" || {
+            echo "::error::Credentials rejected: check that JIRA_EMAIL is the account that created JIRA_API_TOKEN, that the token is a classic API token (not a scoped one), and that JIRA_BASE_URL is exactly https://<site>.atlassian.net"
+            exit 1
+          }
+          echo "Authenticated as $(echo "$body" | jq -r '.displayName')"
+
+          jira "$api?fields=status" || { echo "::error::Cannot read $key (does the ticket exist, and can this account see project ${key%-*}?)"; exit 1; }
+          current=$(echo "$body" | jq -r '.fields.status.name')
+          echo "$key is currently \"$current\""
+          if [ "$current" = "$TARGET_STATUS" ]; then
+            echo "Already \"$TARGET_STATUS\", nothing to do."
+            exit 0
+          fi
+
+          # Transition ids differ between projects: look the transition up by its target status name.
+          jira "$api/transitions" || exit 1
+          transition=$(echo "$body" | jq -r --arg s "$TARGET_STATUS" '.transitions[] | select(.to.name == $s) | .id' | head -n 1)
+          if [ -z "$transition" ]; then
+            echo "::error::No transition to \"$TARGET_STATUS\" available for $key (does the status exist in the Jira workflow?)"
+            exit 1
+          fi
+
+          jira -X POST -d "{\"transition\":{\"id\":\"$transition\"}}" "$api/transitions" || exit 1
+          echo "$key moved to \"$TARGET_STATUS\"."

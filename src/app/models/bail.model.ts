@@ -19,3 +19,12 @@ export interface BailRequest {
   loyerMensuel: number;
   depotGarantie: number;
 }
+
+/* Bien et locataire sont volontairement absents : ils ne sont pas modifiables
+   sur un bail existant. */
+export interface BailUpdateRequest {
+  dateDebut: string;
+  dateFin?: string;
+  loyerMensuel: number;
+  depotGarantie: number;
+}

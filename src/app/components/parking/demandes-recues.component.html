@@ -1,0 +1,109 @@
+<p-confirmpopup />
+
+<ng-template #carte let-d>
+  <li>
+    <div class="ligne">
+      <strong>{{ d.quartier }}, {{ villeLabels[d.ville] }} — {{ typeLabels[d.type] }}</strong>
+      <span class="pastille" [class.en-attente]="d.etat === 'EN_ATTENTE'" [class.inactive]="d.etat !== 'EN_ATTENTE' && d.etat !== 'ACCEPTEE'">{{ etatLabels[d.etat] }}</span>
+    </div>
+    <p class="lecture">{{ d.adresse }}</p>
+    <p>
+      du {{ d.arrivee | date: 'dd/MM/yyyy' }} au {{ d.depart | date: 'dd/MM/yyyy' }} ({{ d.nbJours }}
+      {{ d.nbJours > 1 ? 'jours' : 'jour' }})
+    </p>
+    <p><strong>Total : {{ d.prixTotal | prixDt }}</strong></p>
+    <p>Voyageur : {{ d.voyageurNom }}</p>
+    @if (d.telephoneVoyageur) {
+      <p>Téléphone du voyageur : {{ d.telephoneVoyageur }}</p>
+    }
+    @if (d.vehicule) {
+      <p class="lecture">Véhicule : {{ d.vehicule }}</p>
+    }
+    @if (d.message) {
+      <p class="lecture">Message : {{ d.message }}</p>
+    }
+    @if (d.motif) {
+      <p class="lecture">Motif : {{ d.motif }}</p>
+    }
+    <p>
+      Paiement : {{ paiementLabels[d.etatPaiement] }}
+      @if (d.etatPaiement === 'PAYE' && d.moyenPaiement && d.datePaiement) {
+        ({{ moyenLabels[d.moyenPaiement] }}, le {{ d.datePaiement | date: 'dd/MM/yyyy' }})
+      }
+    </p>
+    <p class="discret">Demandée le {{ d.demandeeLe | date: 'dd/MM/yyyy' }}</p>
+
+    @if (panneau()?.id === d.id) {
+      <div class="panneau">
+        <p>
+          {{
+            panneau()?.action === 'refus'
+              ? 'Refuser cette demande ?'
+              : 'Annuler cette réservation acceptée ? Le voyageur en sera informé dans Mes réservations.'
+          }}
+        </p>
+        <label>
+          Motif (facultatif)
+          <textarea rows="3" [value]="motif()" (input)="saisieMotif($event)"></textarea>
+        </label>
+        @if (motifTropLong()) {
+          <span class="error">{{ motifMax }} caractères maximum.</span>
+        }
+        <div class="actions">
+          <button type="button" class="secondaire" (click)="fermerPanneau()">Retour</button>
+          <button type="button" class="danger" [disabled]="envoiEnCours() || motifTropLong()" (click)="confirmerPanneau()">
+            {{ panneau()?.action === 'refus' ? 'Refuser' : 'Annuler la réservation' }}
+          </button>
+        </div>
+      </div>
+    } @else if (d.acceptable || d.annulable) {
+      <div class="actions">
+        @if (d.acceptable) {
+          <button type="button" class="danger" [disabled]="envoiEnCours()" (click)="ouvrirPanneau(d.id, 'refus')">Refuser</button>
+          <button type="button" class="principal" [disabled]="envoiEnCours()" (click)="confirmAcceptation($event, d)">Accepter</button>
+        }
+        @if (d.annulable) {
+          <button type="button" class="danger" [disabled]="envoiEnCours()" (click)="ouvrirPanneau(d.id, 'annulation')">Annuler la réservation</button>
+        }
+      </div>
+    }
+  </li>
+</ng-template>
+
+<section class="demandes-page">
+  <div class="page-header">
+    <h1>Demandes reçues</h1>
+    <a routerLink="/parking/loueur" class="lien-header">Mes places</a>
+  </div>
+
+  @if (errorMessage()) {
+    <p class="error">{{ errorMessage() }}</p>
+  }
+
+  @if (chargement()) {
+    <p>Chargement...</p>
+  } @else if (enErreur()) {
+    <p class="error">Impossible d'afficher les demandes reçues. Veuillez réessayer.</p>
+  } @else if (demandesResource.value().length === 0) {
+    <div class="vide">
+      <p>Vous n'avez reçu aucune demande pour le moment.</p>
+    </div>
+  } @else {
+    @if (enAttente().length > 0) {
+      <h2>En attente</h2>
+      <ul>
+        @for (d of enAttente(); track d.id) {
+          <ng-container [ngTemplateOutlet]="carte" [ngTemplateOutletContext]="{ $implicit: d }" />
+        }
+      </ul>
+    }
+    @if (historique().length > 0) {
+      <h2>Historique</h2>
+      <ul>
+        @for (d of historique(); track d.id) {
+          <ng-container [ngTemplateOutlet]="carte" [ngTemplateOutletContext]="{ $implicit: d }" />
+        }
+      </ul>
+    }
+  }
+</section>
